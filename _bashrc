@@ -1,0 +1,149 @@
+# bash completion
+[ -f /usr/local/etc/bash_completion ] && source /usr/local/etc/bash_completion
+
+# prompt
+_ps1 () {
+  local reset='\[\e[0m\]'
+  local bold='\[\e[1m\]'
+  local under='\[\e[4m\]'
+  local inv='\[\e[7m\]'
+  local nobold='\[\e[22m\]'
+  local nounder='\[\e[24m\]'
+  local noinv='\[\e[27m\]'
+  local red='\[\e[31m\]'
+
+  _errst () { local st=$?; [ $st -ne 0 ] && printf "${1}${st}${2}"; }
+  local errst="\$(_errst '${bold}${inv}${red} ' ' ${reset}\n ')"
+  local prompt="${bold}\w\$(__git_ps1 ' ${under}%s')${reset}"
+
+  # one-line prompt
+  #PS1="${errst}\n${prompt} "
+  #PS2='… '
+
+  # two-line prompt (looks best with Menlo)
+  PS1="${errst}\n╭ ${prompt}\n╰─► "
+  PS2=' ─► '
+} && _ps1
+
+# aliases
+alias ..='cd ..'
+alias ls='ls -G'
+alias l='ls'
+alias la='ls -A'
+alias ll='ls -lh'
+alias lla='ll -A'
+alias grep='grep --color=auto'
+alias rc='mvim ~/.bashrc'
+
+# Git
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWSTASHSTATE=1
+GIT_PS1_SHOWUNTRACKEDFILES=1
+GIT_PS1_SHOWUPSTREAM='auto'
+alias gs='git status --branch --short'
+
+# Heroku
+export PATH="${PATH}:/usr/local/heroku/bin"
+
+# Homebrew
+export PATH="/usr/local/bin:${PATH}"
+
+# MacVim
+mvim () { /usr/local/bin/mvim "$@" >/dev/null; }
+alias e='mvim'
+alias et='mvim -p'
+export EDITOR='mvim -f'
+#export GIT_EDITOR='mvim -f +1'  # already set in ~/.gitconfig
+
+# Mercurial
+export LC_ALL='en_US.UTF-8'
+export LANG='en_US.UTF-8'
+
+# Node.js & npm
+#export NODE_PATH='/usr/local/lib/node_modules'
+export PATH="${PATH}:/usr/local/share/npm/bin"
+
+# OS X
+alias airports='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -s'
+alias launchservices-hockenberry='/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -seed -r'
+alias launchservices-siracusa='/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user'
+
+# Python
+alias py='python'
+export PYTHONSTARTUP="$HOME/.pythonrc.py"
+
+# rbenv
+eval "$(rbenv init -)"
+
+# Ruby
+alias bx='bundle exec'
+alias gems='gem query --remote --name-matches'
+
+# ~/bin
+#export PATH="$HOME/bin:${PATH}"
+
+# myriad shell functions
+
+tab () {
+  # Runs a command in a new tab in Terminal.app
+  local command="cd \\\"$PWD\\\""
+  (( $# > 0 )) && command="${command}; $*"
+  osascript 2>/dev/null <<EOF
+    tell application "System Events"
+      tell process "Terminal" to keystroke "t" using command down
+      tell application "Terminal" to do script "${command}" in front window
+    end tell
+EOF
+}
+
+pfd () {
+  # Prints the path to the current folder of the topmost Finder window
+  osascript 2>/dev/null <<EOF
+    tell application "Finder"
+      return POSIX path of (target of window 1 as alias)
+    end tell
+EOF
+}
+
+pfs () {
+  # Prints the paths to all the selected items in the topmost Finder window
+  osascript 2>/dev/null <<EOF
+    set output to ""
+    tell application "Finder" to set the_selection to selection
+    set item_count to count the_selection
+    repeat with item_index from 1 to count the_selection
+      if item_index is less than item_count then set the_delimiter to "\n"
+      if item_index is item_count then set the_delimiter to ""
+      set output to output & ((item item_index of the_selection as alias)'s POSIX path) & the_delimiter
+    end repeat
+EOF
+}
+
+trash () {
+  # Moves files to the Trash
+  for path in "$@"; do
+    local abspath="$(cd "$(dirname "${path}")"; pwd)/$(basename "${path}")"
+    osascript -e "tell app \"Finder\" to move the POSIX file \"${abspath}\" to trash"
+  done
+}
+
+ql () {
+  # Shows the contents of files using Quick Look
+  (( $# > 0 )) && qlmanage -p $* &>/dev/null
+}
+
+cdf () {
+  # Changes the current directory to the current folder of the topmost Finder window
+  cd $(pfd)
+}
+
+man-preview () {
+  # Displays man pages in Preview.app
+  man -t "$@" | open -f -a Preview
+}
+
+inf-proxy () {
+  ssh dcsilva@portal.inf.ufrgs.br -L 3128:power-proxy.inf.ufrgs.br:3128
+}
+
+# vim:ft=sh
