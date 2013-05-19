@@ -3,12 +3,15 @@
 import glob
 import os
 import os.path as path
+import sys
 
+def abort(message):
+    print(message)
+    sys.exit(1)
 
 def get_confirmation(message):
     reply = raw_input('%s [y/N]: ' % message)
     return reply.strip().lower().startswith('y')
-
 
 def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
     """
@@ -24,14 +27,12 @@ def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
 
     dotfiles = glob.glob(path.join(dotfiles_absolute, '_*'))
     if not dotfiles:
-        print('Nothing to install.')
-        return
+        abort('Nothing to install.')
 
     if dry_run:
         print('Dry run:')
     elif not get_confirmation('Install symlinks into %r?' % target_absolute):
-        print('Installation cancelled.')
-        return
+        abort('Installation cancelled.')
 
     # TODO highlight the first word of each message in a different color
     skipping_file = 'Skipping existing file or directory: %s'
@@ -63,7 +64,6 @@ def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
 
     print('Done.')
 
-
 def main(argv):
     try:
         target_dir = argv[1]
@@ -71,18 +71,14 @@ def main(argv):
         target_dir = os.environ['HOME']
 
     if not path.exists(target_dir):
-        print('Path %r does not exist.' % target_dir)
-        return
+        abort('Path %r does not exist.' % target_dir)
     if not path.isdir(target_dir):
-        print('%r is not a directory.' % target_dir)
-        return
+        abort('%r is not a directory.' % target_dir)
 
     # TODO support dry-run mode with -d|--dry-run
 
     dotfiles_dir = path.dirname(argv[0])
     install_symlinks(dotfiles_dir, target_dir)
 
-
 if __name__ == '__main__':
-    import sys
     main(sys.argv)
