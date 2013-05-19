@@ -65,6 +65,15 @@ def main(argv):
     except IndexError:
         target_dir = os.environ['HOME']
 
+    if not path.exists(target_dir):
+        print('Path %r does not exist.' % target_dir)
+        return
+    if not path.isdir(target_dir):
+        print('%r is not a directory.' % target_dir)
+        return
+
+    # TODO support dry-run mode with -d|--dry-run
+
     dotfiles_dir = path.dirname(argv[0])
     install_symlinks(dotfiles_dir, target_dir)
 
