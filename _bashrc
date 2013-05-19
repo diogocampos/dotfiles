@@ -47,6 +47,12 @@ export PATH="${PATH}:/usr/local/heroku/bin"
 
 # Homebrew
 export PATH="/usr/local/bin:${PATH}"
+brew-up () {
+  brew update   && echo &&
+  brew outdated && echo &&
+  brew upgrade  && echo &&
+  brew cleanup
+}
 
 # MacVim
 mvim () { /usr/local/bin/mvim "$@" >/dev/null; }
