@@ -13,6 +13,20 @@ def get_confirmation(message):
     reply = raw_input('%s [y/N]: ' % message)
     return reply.strip().lower().startswith('y')
 
+def colored(color, text):
+    escape = '\033[%sm'
+    colors = {
+      'k' : escape % 30,
+      'r' : escape % 31,
+      'g' : escape % 32,
+      'y' : escape % 33,
+      'b' : escape % 34,
+      'm' : escape % 35,
+      'c' : escape % 36,
+      'w' : escape % 37}
+    reset = escape % 0
+    return colors[color] + text + reset
+
 def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
     """
     Finds the files in `dotfiles_dir` whose names start with an underscore and
@@ -34,11 +48,10 @@ def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
     elif not get_confirmation('Install symlinks into %r?' % target_absolute):
         abort('Installation cancelled.')
 
-    # TODO highlight the first word of each message in a different color
-    skipping_file = 'Skipping existing file or directory: %s'
-    skipping_link = 'Skipping up-to-date symlink: %s'
-    updating_link = 'Updating symlink: %s -> %s'
-    creating_link = 'Creating symlink: %s -> %s'
+    skipping_file = colored('r', 'Skipping') + ' existing file or directory: %s'
+    skipping_link = colored('g', 'Skipping') + ' up-to-date symlink: %s'
+    updating_link = colored('y', 'Updating') + ' symlink: %s -> %s'
+    creating_link = colored('y', 'Creating') + ' symlink: %s -> %s'
 
     for abspath in dotfiles:
         relpath = path.relpath(abspath, target_absolute)
