@@ -16,8 +16,8 @@ def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
     creates symlinks in `target_dir` pointing to those files, replacing the
     underscore with a dot.
 
-    Pre-existing symlinks with the same names in `target_dir` are removed and
-    re-created, but files and directories are not affected.
+    Pre-existing symlinks with the same names in `target_dir` are updated if
+    necessary, but existing files and directories are not affected.
     """
     dotfiles_absolute = path.abspath(dotfiles_dir)
     target_absolute   = path.abspath(target_dir)
@@ -33,9 +33,11 @@ def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
         print('Installation cancelled.')
         return
 
-    message_for_skip   = 'Skipping existing file or directory: %s'
-    message_for_update = 'Updating symlink: %s -> %s'
-    message_for_create = 'Creating symlink: %s -> %s'
+    # TODO highlight the first word of each message in a different color
+    skipping_file = 'Skipping existing file or directory: %s'
+    skipping_link = 'Skipping up-to-date symlink: %s'
+    updating_link = 'Updating symlink: %s -> %s'
+    creating_link = 'Creating symlink: %s -> %s'
 
     for abspath in dotfiles:
         relpath = path.relpath(abspath, target_absolute)
@@ -43,15 +45,18 @@ def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
         linkpath = path.join(target_absolute, dotname)
 
         if path.exists(linkpath) and not path.islink(linkpath):
-            print(message_for_skip % linkpath)
+            print(skipping_file % linkpath)
             continue
 
         if path.islink(linkpath):
-            print(message_for_update % (linkpath, relpath))
+            if path.samefile(abspath, path.realpath(linkpath)):
+                print(skipping_link % linkpath)
+                continue
+
+            print(updating_link % (linkpath, relpath))
             if not dry_run: os.remove(linkpath)
-            # TODO don't touch links that already point to the right place
         else:
-            print(message_for_create % (linkpath, relpath))
+            print(creating_link % (linkpath, relpath))
 
         # Do it!
         if not dry_run: os.symlink(relpath, linkpath)
