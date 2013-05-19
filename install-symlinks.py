@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from contextlib import contextmanager
 import glob
 import os
 import os.path as path
@@ -11,16 +10,6 @@ def get_confirmation(message):
     return reply.strip().lower().startswith('y')
 
 
-@contextmanager
-def chdir(target):
-    origin = os.getcwd()
-    os.chdir(target)
-    try:
-        yield
-    finally:
-        os.chdir(origin)
-
-
 def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
     """
     Finds the files in `dotfiles_dir` whose names start with an underscore and
@@ -28,43 +17,46 @@ def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
     underscore with a dot.
 
     Pre-existing symlinks with the same names in `target_dir` are removed and
-    recreated, but files and directories are not affected.
+    re-created, but files and directories are not affected.
     """
     dotfiles_absolute = path.abspath(dotfiles_dir)
-    dotfiles_relative = path.relpath(dotfiles_absolute, target_dir)
+    target_absolute   = path.abspath(target_dir)
 
-    with chdir(target_dir):
-        relative_paths = glob.glob(path.join(dotfiles_relative, '_*'))
-        if not relative_paths:
-            print('Nothing to install.')
-            return
+    dotfiles = glob.glob(path.join(dotfiles_absolute, '_*'))
+    if not dotfiles:
+        print('Nothing to install.')
+        return
 
-        if not get_confirmation('Install symlinks into %r?' % target_dir):
-            print('Installation cancelled.')
-            return
+    if dry_run:
+        print('Dry run:')
+    elif not get_confirmation('Install symlinks into %r?' % target_absolute):
+        print('Installation cancelled.')
+        return
 
-        message_for_skip   = 'Skipping existing file or directory: %s'
-        message_for_update = 'Updating symlink: %s -> %s'
-        message_for_create = 'Creating symlink: %s -> %s'
+    message_for_skip   = 'Skipping existing file or directory: %s'
+    message_for_update = 'Updating symlink: %s -> %s'
+    message_for_create = 'Creating symlink: %s -> %s'
 
-        for relpath in relative_paths:
-            dotname = '.' + path.basename(relpath)[1:]
-            dotpath = path.join(target_dir, dotname)
+    for abspath in dotfiles:
+        relpath = path.relpath(abspath, target_absolute)
+        dotname = '.' + path.basename(abspath)[1:]
+        linkpath = path.join(target_absolute, dotname)
 
-            if path.exists(dotname) and not path.islink(dotname):
-                print(message_for_skip % dotpath)
-                continue
+        if path.exists(linkpath) and not path.islink(linkpath):
+            print(message_for_skip % linkpath)
+            continue
 
-            if path.islink(dotname):
-                print(message_for_update % (dotpath, relpath))
-                if not dry_run: os.remove(dotname)
-            else:
-                print(message_for_create % (dotpath, relpath))
+        if path.islink(linkpath):
+            print(message_for_update % (linkpath, relpath))
+            if not dry_run: os.remove(linkpath)
+            # TODO don't touch links that already point to the right place
+        else:
+            print(message_for_create % (linkpath, relpath))
 
-            # do it!
-            if not dry_run: os.symlink(relpath, dotname)
+        # Do it!
+        if not dry_run: os.symlink(relpath, linkpath)
 
-        print('Done.')
+    print('Done.')
 
 
 def main(argv):
