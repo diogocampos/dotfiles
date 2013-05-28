@@ -82,6 +82,10 @@ if has("autocmd")
   au FileType vim    setlocal keywordprg=:help
 endif
 
+"" SuperTab
+
+let g:SuperTabDefaultCompletionType = "context"
+
 "" Netrw
 
 let g:netrw_liststyle = 3     " tree-style listing
