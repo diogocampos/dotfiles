@@ -40,6 +40,8 @@ GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
 GIT_PS1_SHOWUPSTREAM='auto'
+alias gci='git commit'
+alias gco='git checkout'
 alias gl='git log --graph --oneline'
 alias gs='git status --branch --short'
 
