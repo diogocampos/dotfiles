@@ -82,15 +82,19 @@ if has("autocmd")
   au FileType vim    setlocal keywordprg=:help
 endif
 
-"" SuperTab
-
-let g:SuperTabDefaultCompletionType = "context"
-
 "" Netrw
 
 let g:netrw_liststyle = 3     " tree-style listing
 let g:netrw_browse_split = 4  " open file in previous window
 let g:netrw_preview = 1       " show preview in a vertical split
+
+"" SuperTab
+
+let g:SuperTabDefaultCompletionType = "context"
+
+"" vim-capslock
+
+imap <C-L> <Plug>CapsLockToggle
 
 "" Key mappings
 
@@ -113,14 +117,14 @@ endif
 noremap \ ,
 let mapleader = ','
 
-nnoremap <leader>/ :set hlsearch!<CR>
-nnoremap <leader>l :set list!<CR>
-nnoremap <leader>4 :call <SID>StripTrailingWhitespace()<CR>
+nnoremap <Leader>/ :set hlsearch!<CR>
+nnoremap <Leader>l :set list!<CR>
+nnoremap <Leader>4 :call <SID>StripTrailingWhitespace()<CR>
 
-nmap <leader>ee :edit <C-R>=expand('%:h').'/'<CR>
-nmap <leader>es :split <C-R>=expand('%:h').'/'<CR>
-nmap <leader>ev :vsplit <C-R>=expand('%:h').'/'<CR>
-nmap <leader>et :tabedit <C-R>=expand('%:h').'/'<CR>
+nmap <Leader>ee :edit <C-R>=expand('%:h').'/'<CR>
+nmap <Leader>es :split <C-R>=expand('%:h').'/'<CR>
+nmap <Leader>ev :vsplit <C-R>=expand('%:h').'/'<CR>
+nmap <Leader>et :tabedit <C-R>=expand('%:h').'/'<CR>
 
 function! <SID>StripTrailingWhitespace()
   " save most recent search pattern and current cursor position

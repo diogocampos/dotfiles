@@ -19,3 +19,6 @@
 [submodule "_vim/bundle/supertab"]
 	path = _vim/bundle/supertab
 	url = git://github.com/ervandew/supertab.git
+[submodule "_vim/bundle/vim-capslock"]
+	path = _vim/bundle/vim-capslock
+	url = git://github.com/tpope/vim-capslock.git
