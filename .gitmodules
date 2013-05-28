@@ -13,3 +13,6 @@
 [submodule "_vim/bundle/vim-unimpaired"]
 	path = _vim/bundle/vim-unimpaired
 	url = git://github.com/tpope/vim-unimpaired.git
+[submodule "_vim/bundle/vim-commentary"]
+	path = _vim/bundle/vim-commentary
+	url = git://github.com/tpope/vim-commentary.git
