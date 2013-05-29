@@ -31,3 +31,6 @@
 [submodule "_vim/bundle/vim-scala"]
 	path = _vim/bundle/vim-scala
 	url = git://github.com/derekwyatt/vim-scala.git
+[submodule "_vim/bundle/vim-indent-object"]
+	path = _vim/bundle/vim-indent-object
+	url = git://github.com/michaeljsmith/vim-indent-object.git
