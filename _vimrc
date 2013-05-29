@@ -93,6 +93,11 @@ let g:netrw_liststyle = 3     " tree-style listing
 let g:netrw_browse_split = 4  " open file in previous window
 let g:netrw_preview = 1       " show preview in a vertical split
 
+"" delimitMate
+
+let delimitMate_expand_cr = 1
+let delimitMate_expand_space = 1
+
 "" SuperTab
 
 let g:SuperTabDefaultCompletionType = "context"
