@@ -75,6 +75,11 @@ set incsearch   " search as I type
 set foldmethod=syntax nofoldenable
 nnoremap <Space> za
 
+if has("autocmd")
+  au FileType coffee setlocal foldmethod=indent nofoldenable
+  au FileType python setlocal foldmethod=indent nofoldenable
+endif
+
 "" Keyword lookup
 
 if has("autocmd")
