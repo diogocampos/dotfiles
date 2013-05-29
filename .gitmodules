@@ -28,3 +28,6 @@
 [submodule "_vim/bundle/delimitMate"]
 	path = _vim/bundle/delimitMate
 	url = git://github.com/Raimondi/delimitMate.git
+[submodule "_vim/bundle/vim-scala"]
+	path = _vim/bundle/vim-scala
+	url = git://github.com/derekwyatt/vim-scala.git
