@@ -22,3 +22,6 @@
 [submodule "_vim/bundle/vim-capslock"]
 	path = _vim/bundle/vim-capslock
 	url = git://github.com/tpope/vim-capslock.git
+[submodule "_vim/bundle/vim-coffee-script"]
+	path = _vim/bundle/vim-coffee-script
+	url = git://github.com/kchmck/vim-coffee-script.git
