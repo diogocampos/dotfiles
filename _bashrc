@@ -78,7 +78,7 @@ alias launchservices-siracusa='/System/Library/Frameworks/CoreServices.framework
 
 # Python
 alias py='python'
-export PYTHONSTARTUP="${HOME}/.pythonrc.py"
+export PYTHONSTARTUP="${HOME}/.pythonstartup"
 
 # rbenv
 eval "$(rbenv init -)"
