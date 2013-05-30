@@ -129,8 +129,9 @@ EOF
 trash () {
   # Moves files to the Trash
   for path in "$@"; do
+    echo "Trashing ${path}"
     local abspath="$(cd "$(dirname "${path}")"; pwd)/$(basename "${path}")"
-    osascript -e "tell app \"Finder\" to move the POSIX file \"${abspath}\" to trash"
+    osascript -e "tell app \"Finder\" to move the POSIX file \"${abspath}\" to trash" >/dev/null
   done
 }
 
