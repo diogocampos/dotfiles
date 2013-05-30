@@ -10,6 +10,8 @@
 	last = log -1
 	lg = log --graph --oneline
 	padd = add --patch
+	rb = rebase
+	rbi = rebase --interactive
 	st = status --branch --short
 [color]
 	ui = auto
