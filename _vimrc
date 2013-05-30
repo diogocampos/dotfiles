@@ -34,10 +34,6 @@ set hidden              " allow background buffers
 
 set wildmode=list:longest,list:full   " sensible command line completion
 
-if has("autocmd")
-  au FileType markdown setlocal formatoptions+=a   " auto-format paragraphs
-endif
-
 "" Whitespace
 
 set autoindent      " new lines copy the current line's indentation
