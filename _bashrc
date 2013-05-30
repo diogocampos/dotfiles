@@ -42,7 +42,7 @@ GIT_PS1_SHOWUNTRACKEDFILES=1
 GIT_PS1_SHOWUPSTREAM='auto'
 alias g='git' &&
   complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
-alias gci='git commit'
+alias gci='git commit --verbose'
 alias gd='git diff'
 alias gl='git log --graph --oneline'
 alias gs='git status --branch --short'
