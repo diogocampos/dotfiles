@@ -52,7 +52,7 @@ if has("autocmd")
   au FileType git*       setlocal ts=8 sts=8 sw=8 noet nolist
   au FileType javascript setlocal ts=2 sts=2 sw=2   et
   au FileType make       setlocal ts=8 sts=8 sw=8 noet
-  au FileType markdown   setlocal ts=2 sts=2 sw=2   et
+  au FileType markdown   setlocal ts=4 sts=4 sw=4   et
   au FileType python     setlocal ts=4 sts=4 sw=4   et
   au FileType ruby,eruby setlocal ts=2 sts=2 sw=2   et
   au FileType *sh        setlocal ts=8 sts=2 sw=2   et
