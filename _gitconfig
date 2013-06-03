@@ -7,6 +7,7 @@
 	cdiff = diff --cached
 	ci = commit --verbose
 	co = checkout
+	l = log --graph --oneline
 	last = log -1
 	padd = add --patch
 	rb = rebase
