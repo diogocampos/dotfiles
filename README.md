@@ -30,6 +30,15 @@ The `install-symlinks.py` script asks for confirmation before creating symlinks
 in a directory of your choice, defaulting to `$HOME`.  **Conflicting symlinks
 will be overwritten**, but existing files and directories will not be affected.
 
+You can preview all the changes without applying them by using the
+`-d`/`--dry-run` flag:
+
+    $ ./install-symlinks.py [target] --dry-run
+
+To see all the options supported by the script, run:
+
+    $ ./install-symlinks.py --help
+
 Thanks
 ------
 
