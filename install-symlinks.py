@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import argparse
 import glob
 import os
 import os.path as path
@@ -78,21 +79,32 @@ def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
 
     print('Done.')
 
-def main(argv):
-    try:
-        target_dir = argv[1]
-    except IndexError:
-        target_dir = os.environ['HOME']
+def argument_parser(prog_name=None):
+    parser = argparse.ArgumentParser(prog=prog_name,
+            description='Install dotfiles as symbolic links.')
 
+    parser.add_argument('target_dir', nargs='?',
+            help='the directory that will contain the links (default: $HOME)')
+
+    parser.add_argument('-d', '--dry-run', action='store_true',
+            help="don't install the links; just show what would happen")
+
+    return parser
+
+def main(argv):
+    parser = argument_parser(argv[0])
+    args = parser.parse_args(argv[1:])
+
+    target_dir = args.target_dir or os.environ['HOME']
     if not path.exists(target_dir):
         abort('Path %r does not exist.' % target_dir)
     if not path.isdir(target_dir):
         abort('%r is not a directory.' % target_dir)
 
-    # TODO support dry-run mode with -d|--dry-run
-
+    # Get the directory that contains this script:
     dotfiles_dir = path.dirname(argv[0])
-    install_symlinks(dotfiles_dir, target_dir)
+
+    install_symlinks(dotfiles_dir, target_dir, args.dry_run)
 
 if __name__ == '__main__':
     main(sys.argv)
