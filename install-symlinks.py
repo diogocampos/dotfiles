@@ -84,6 +84,8 @@ def argument_parser(prog_name=None):
             description='Install dotfiles as symbolic links.')
 
     parser.add_argument('target_dir', nargs='?',
+            type=lambda string: (lambda: string),
+            default=lambda: os.environ['HOME'],
             help='the directory that will contain the links (default: $HOME)')
 
     parser.add_argument('-d', '--dry-run', action='store_true',
@@ -92,17 +94,14 @@ def argument_parser(prog_name=None):
     return parser
 
 def main(argv):
-    parser = argument_parser(argv[0])
-    args = parser.parse_args(argv[1:])
+    dotfiles_dir, prog_name = path.split(argv[0])
+    args = argument_parser(prog_name).parse_args(argv[1:])
 
-    target_dir = args.target_dir or os.environ['HOME']
+    target_dir = args.target_dir()
     if not path.exists(target_dir):
         abort('Path %r does not exist.' % target_dir)
     if not path.isdir(target_dir):
         abort('%r is not a directory.' % target_dir)
-
-    # Get the directory that contains this script:
-    dotfiles_dir = path.dirname(argv[0])
 
     install_symlinks(dotfiles_dir, target_dir, args.dry_run)
 
