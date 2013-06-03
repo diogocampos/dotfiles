@@ -3,7 +3,7 @@
 	name = Diogo Campos
 	email = diogocampos@me.com
 [alias]
-	br = branch
+	br = branch -vv
 	cdiff = diff --cached
 	ci = commit --verbose
 	co = checkout
