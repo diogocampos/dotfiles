@@ -16,16 +16,16 @@ def get_confirmation(message):
 def colored(color, text):
     escape = '\033[%sm'
     colors = {
-      'k' : escape % 30,
-      'r' : escape % 31,
-      'g' : escape % 32,
-      'y' : escape % 33,
-      'b' : escape % 34,
-      'm' : escape % 35,
-      'c' : escape % 36,
-      'w' : escape % 37}
+      'k' : escape % 30,    # black
+      'r' : escape % 31,    # red
+      'g' : escape % 32,    # green
+      'y' : escape % 33,    # yellow
+      'b' : escape % 34,    # blue
+      'm' : escape % 35,    # magenta
+      'c' : escape % 36,    # cyan
+      'w' : escape % 37}    # white
     reset = escape % 0
-    return colors[color] + text + reset
+    return colors[color.lower()] + text + reset
 
 def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
     """
@@ -44,14 +44,15 @@ def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
         abort('Nothing to install.')
 
     if dry_run:
-        print('Dry run:')
-    elif not get_confirmation('Install symlinks into %r?' % target_absolute):
-        abort('Installation cancelled.')
+        print(colored('b', 'DRY RUN:'))
+    else:
+        message = 'Install symlinks into %s?' % colored('b', target_absolute)
+        get_confirmation(message) or abort('Installation cancelled.')
 
     skipping_file = colored('r', 'Skipping') + ' existing file or directory: %s'
-    skipping_link = colored('g', 'Skipping') + ' up-to-date symlink: %s'
-    updating_link = colored('y', 'Updating') + ' symlink: %s -> %s'
-    creating_link = colored('y', 'Creating') + ' symlink: %s -> %s'
+    skipping_link = colored('y', 'Skipping') + ' up-to-date symlink: %s'
+    updating_link = colored('g', 'Updating') + ' symlink: %s -> %s'
+    creating_link = colored('g', 'Creating') + ' symlink: %s -> %s'
 
     for abspath in dotfiles:
         relpath = path.relpath(abspath, target_absolute)
