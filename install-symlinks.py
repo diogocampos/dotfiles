@@ -28,7 +28,7 @@ def colored(color, text):
     reset = escape % 0
     return colors[color.lower()] + text + reset
 
-def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
+def install_symlinks(dotfiles_dir, target_dir, dry_run=False, confirm=True):
     """
     Finds the files in `dotfiles_dir` whose names start with an underscore and
     creates symlinks in `target_dir` pointing to those files, replacing the
@@ -46,7 +46,7 @@ def install_symlinks(dotfiles_dir, target_dir, dry_run=False):
 
     if dry_run:
         print(colored('b', 'DRY RUN:'))
-    else:
+    elif confirm:
         message = 'Install symlinks into %s?' % colored('b', target_absolute)
         get_confirmation(message) or abort('Installation cancelled.')
 
@@ -91,6 +91,10 @@ def argument_parser(prog_name=None):
     parser.add_argument('-d', '--dry-run', action='store_true',
             help="don't install the links; just show what would happen")
 
+    parser.add_argument('-y', '--no-confirm',
+            dest='confirm', action='store_false',
+            help="don't ask for confirmation before installing")
+
     return parser
 
 def main(argv):
@@ -103,7 +107,7 @@ def main(argv):
     if not path.isdir(target_dir):
         abort('%r is not a directory.' % target_dir)
 
-    install_symlinks(dotfiles_dir, target_dir, args.dry_run)
+    install_symlinks(dotfiles_dir, target_dir, args.dry_run, args.confirm)
 
 if __name__ == '__main__':
     main(sys.argv)
