@@ -45,7 +45,7 @@ def install_symlinks(dotfiles_dir, target_dir, dry_run=False, confirm=True):
         abort('Nothing to install.')
 
     if dry_run:
-        print(colored('b', 'DRY RUN:'))
+        print(colored('b', 'Dry run:'))
     elif confirm:
         message = 'Install symlinks into %s?' % colored('b', target_absolute)
         get_confirmation(message) or abort('Installation cancelled.')
@@ -89,7 +89,7 @@ def argument_parser(prog_name=None):
             help='the directory that will contain the links (default: $HOME)')
 
     parser.add_argument('-d', '--dry-run', action='store_true',
-            help="don't install the links; just show what would happen")
+            help="don't install anything; just show what would happen")
 
     parser.add_argument('-y', '--no-confirm',
             dest='confirm', action='store_false',
