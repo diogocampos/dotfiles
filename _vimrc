@@ -83,6 +83,10 @@ if has("autocmd")
   au FileType vim    setlocal keywordprg=:help
 endif
 
+"" Status line
+
+set laststatus=2  " always show a status line
+
 "" Netrw
 
 let g:netrw_liststyle = 3     " tree-style listing
