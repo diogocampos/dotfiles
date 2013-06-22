@@ -91,7 +91,7 @@ def argument_parser(prog_name=None):
     parser.add_argument('-d', '--dry-run', action='store_true',
             help="don't install anything; just show what would happen")
 
-    parser.add_argument('-y', '--no-confirm',
+    parser.add_argument('-y', '--yes',
             dest='confirm', action='store_false',
             help="don't ask for confirmation before installing")
 
