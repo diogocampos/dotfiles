@@ -4,25 +4,25 @@
 # prompt
 __bashrc_ps1 () {
   local reset='\[\e[0m\]'
-  local bold='\[\e[1m\]'
-  local under='\[\e[4m\]'
-  local inv='\[\e[7m\]'
-  local nobold='\[\e[22m\]'
-  local nounder='\[\e[24m\]'
-  local noinv='\[\e[27m\]'
-  local red='\[\e[31m\]'
+
+  # styles (tweaked for Solarized with dark background)
+  local error_style='\[\e[1;7;31m\]'  # bold, reversed, red
+  local arrow_style='\[\e[0;96m\]'    # regular, bright cyan
+  local prompt_style='\[\e[1;96m\]'   # bold, bright cyan
+  local git_style='\[\e[1;4;96m\]'    # bold, underlined, bright cyan
 
   _errst () { local st=$?; [ $st -ne 0 ] && printf "${1}${st}${2}"; }
-  local errst="\$(_errst '${bold}${inv}${red} ' ' ${reset}\n ')"
-  local prompt="${bold}\w\$(__git_ps1 ' ${under}%s')${reset}"
+  local errst="${reset}\$(_errst '${error_style} ' ' ${reset}\n ')"
+  local prompt="${prompt_style}\w${reset}\$(__git_ps1 ' ${git_style}|%s|')${reset}"
 
   # one-line prompt
   #PS1="${errst}\n${prompt} "
   #PS2='… '
 
-  # two-line prompt (looks best with Menlo)
-  PS1="${errst}\n╭ ${prompt}\n╰─► "
-  PS2=' ─► '
+  # two-line prompt (the arrow looks best with Menlo)
+  _arrow () { printf "${arrow_style}${1}${reset}"; }
+  PS1="${errst}\n$(_arrow '╭') ${prompt}\n$(_arrow '╰─►') "
+  PS2="$(_arrow '╰─►') "
 } && __bashrc_ps1
 
 # aliases
