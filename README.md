@@ -39,6 +39,11 @@ To see all the options supported by the script, run:
 
     $ ./install-symlinks.py --help
 
+Gratuitous screenshot
+---------------------
+
+![](screenshot.png)
+
 Thanks
 ------
 
