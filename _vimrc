@@ -118,6 +118,11 @@ noremap  k gk
 noremap  Q gw
 nnoremap Y y$
 
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+
 if has("gui_macvim")
   " indent and unindent on Cmd-] and Cmd-[
   nnoremap <D-[> <<
