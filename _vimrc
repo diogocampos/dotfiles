@@ -84,8 +84,8 @@ endif
 "" Keyword lookup
 
 if has("autocmd")
-  au FileType python setlocal keywordprg=pydoc
-  au FileType vim    setlocal keywordprg=:help
+  au FileType python   setlocal keywordprg=pydoc
+  au FileType vim,help setlocal keywordprg=:help
 endif
 
 "" Status line
