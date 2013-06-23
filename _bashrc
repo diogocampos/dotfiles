@@ -151,7 +151,8 @@ man-preview () {
 }
 
 inf-proxy () {
-  ssh dcsilva@portal.inf.ufrgs.br -L 3128:power-proxy.inf.ufrgs.br:3128
+  [ -z "$1" ] && echo 'usage: inf-proxy [username]' >&2 && return 1
+  ssh "${1}@portal.inf.ufrgs.br" -L 3128:power-proxy.inf.ufrgs.br:3128
 }
 
 # vim:ft=sh
