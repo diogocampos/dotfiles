@@ -1,36 +1,36 @@
 [submodule "_vim/bundle/vim-pathogen"]
 	path = _vim/bundle/vim-pathogen
-	url = git://github.com/tpope/vim-pathogen.git
+	url = https://github.com/tpope/vim-pathogen.git
 [submodule "_vim/bundle/vim-colors-solarized"]
 	path = _vim/bundle/vim-colors-solarized
-	url = git://github.com/altercation/vim-colors-solarized.git
+	url = https://github.com/altercation/vim-colors-solarized.git
 [submodule "_vim/bundle/vim-surround"]
 	path = _vim/bundle/vim-surround
-	url = git://github.com/tpope/vim-surround.git
+	url = https://github.com/tpope/vim-surround.git
 [submodule "_vim/bundle/vim-repeat"]
 	path = _vim/bundle/vim-repeat
-	url = git://github.com/tpope/vim-repeat.git
+	url = https://github.com/tpope/vim-repeat.git
 [submodule "_vim/bundle/vim-unimpaired"]
 	path = _vim/bundle/vim-unimpaired
-	url = git://github.com/tpope/vim-unimpaired.git
+	url = https://github.com/tpope/vim-unimpaired.git
 [submodule "_vim/bundle/vim-commentary"]
 	path = _vim/bundle/vim-commentary
-	url = git://github.com/tpope/vim-commentary.git
+	url = https://github.com/tpope/vim-commentary.git
 [submodule "_vim/bundle/supertab"]
 	path = _vim/bundle/supertab
-	url = git://github.com/ervandew/supertab.git
+	url = https://github.com/ervandew/supertab.git
 [submodule "_vim/bundle/vim-capslock"]
 	path = _vim/bundle/vim-capslock
-	url = git://github.com/tpope/vim-capslock.git
+	url = https://github.com/tpope/vim-capslock.git
 [submodule "_vim/bundle/vim-coffee-script"]
 	path = _vim/bundle/vim-coffee-script
-	url = git://github.com/kchmck/vim-coffee-script.git
+	url = https://github.com/kchmck/vim-coffee-script.git
 [submodule "_vim/bundle/delimitMate"]
 	path = _vim/bundle/delimitMate
-	url = git://github.com/Raimondi/delimitMate.git
+	url = https://github.com/Raimondi/delimitMate.git
 [submodule "_vim/bundle/vim-scala"]
 	path = _vim/bundle/vim-scala
-	url = git://github.com/derekwyatt/vim-scala.git
+	url = https://github.com/derekwyatt/vim-scala.git
 [submodule "_vim/bundle/vim-indent-object"]
 	path = _vim/bundle/vim-indent-object
-	url = git://github.com/michaeljsmith/vim-indent-object.git
+	url = https://github.com/michaeljsmith/vim-indent-object.git
