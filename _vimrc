@@ -34,6 +34,9 @@ set virtualedit+=block  " let the cursor go anywhere in visual block mode
 set autoread            " auto-reload externally modified files
 set hidden              " allow background buffers
 
+set splitbelow          " put new splits below the current one
+set splitright          " put new vsplits to the right of the current one
+
 set wildmode=list:longest,list:full   " sensible command line completion
 
 "" Whitespace
