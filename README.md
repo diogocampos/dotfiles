@@ -9,7 +9,7 @@ Choose your adventure.
 ### The Quick Way
 
     $ git clone git://github.com/diogocampos/dotfiles.git
-    $ dotfiles/install.sh
+    $ dotfiles/setup.sh
 
 ### The Manual Way
 
