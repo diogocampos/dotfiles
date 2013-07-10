@@ -103,10 +103,6 @@ let g:netrw_preview = 1       " show preview in a vertical split
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 
-"" SuperTab
-
-let g:SuperTabDefaultCompletionType = "context"
-
 "" vim-capslock
 
 imap <C-L> <Plug>CapsLockToggle
