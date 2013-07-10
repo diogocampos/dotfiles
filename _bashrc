@@ -21,8 +21,10 @@ __bashrc_ps1 () {
 
   # two-line prompt (the arrow looks best with Menlo)
   _arrow () { printf "${arrow_style}${1}${reset}"; }
-  PS1="${errst}\n$(_arrow '╭') ${prompt}\n$(_arrow '╰─►') "
-  PS2="$(_arrow '╰─►') "
+  local arrow1="$(_arrow '╭')"
+  local arrow2="$(_arrow '╰─►')"
+  PS1="${errst}\n${arrow1} ${prompt}\n${arrow2} "
+  PS2="${arrow2} "
 } && __bashrc_ps1
 
 # aliases
@@ -145,7 +147,7 @@ ql () {
 
 cdf () {
   # Changes the current directory to the current folder of the topmost Finder window
-  cd $(pfd)
+  cd "$(pfd)"
 }
 
 man-preview () {
