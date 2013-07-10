@@ -67,9 +67,10 @@ endif
 
 "" Searching
 
+set hlsearch    " highlight matches
+set incsearch   " search as I type
 set ignorecase  " case-insensitive search
 set smartcase   " don't ignore case when the pattern has uppercase characters
-set incsearch   " search as I type
 
 "" Folding
 
