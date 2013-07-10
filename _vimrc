@@ -19,8 +19,6 @@ if has("gui_running")
   set guioptions-=T               " no toolbar
   set fuoptions=maxvert,maxhorz   " actually fill the screen in full screen mode
   set visualbell                  " don't beep
-else
-  set background=dark
 endif
 
 set display+=lastline   " show the window's last line even when it's too long
