@@ -34,3 +34,6 @@
 [submodule "_vim/bundle/vim-indent-object"]
 	path = _vim/bundle/vim-indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object.git
+[submodule "_vim/bundle/vim-powerline"]
+	path = _vim/bundle/vim-powerline
+	url = https://github.com/Lokaltog/vim-powerline.git
