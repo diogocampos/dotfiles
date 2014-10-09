@@ -37,3 +37,6 @@
 [submodule "_vim/bundle/vim-powerline"]
 	path = _vim/bundle/vim-powerline
 	url = https://github.com/Lokaltog/vim-powerline.git
+[submodule "_vim/bundle/vim-jade"]
+	path = _vim/bundle/vim-jade
+	url = https://github.com/digitaltoad/vim-jade.git
