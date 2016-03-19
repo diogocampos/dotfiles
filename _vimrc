@@ -12,7 +12,8 @@ set number    " show line numbers
 set ruler     " show cursor position
 set showcmd   " show partial normal-mode commands
 
-colorscheme solarized
+set background=dark
+colorscheme gruvbox
 
 if has('gui_running')
   set guifont=Fantasque\ Sans\ Mono:h13
@@ -20,6 +21,8 @@ if has('gui_running')
   set guioptions-=T               " no toolbar
   set fuoptions=maxvert,maxhorz   " actually fill the screen in full screen mode
   set visualbell                  " don't beep
+else
+  set background=dark
 endif
 
 set display+=lastline   " show the window's last line even when it's too long
