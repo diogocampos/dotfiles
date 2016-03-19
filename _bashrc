@@ -60,8 +60,11 @@ GIT_PS1_SHOWUPSTREAM='auto'   # <: behind, >: ahead, <>: diverged, =: same
 #GIT_PS1_SHOWCOLORHINTS=1
 alias g='git' &&
   complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
+ga () { git add "$@" && git status --branch --short ; }
+alias ga.='ga .'
 alias gci='git commit --verbose'
 alias gd='git diff'
+alias gdc='git diff --cached'
 alias gl='git log --graph --oneline'
 alias gs='git status --branch --short'
 
