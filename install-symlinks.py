@@ -7,7 +7,7 @@ import os.path as path
 import sys
 
 def abort(message):
-    print(message)
+    sys.stderr.write('%s\n' % message)
     sys.exit(1)
 
 def get_confirmation(message):
