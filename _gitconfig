@@ -15,7 +15,7 @@
 [color]
 	ui = auto
 [core]
-	editor = vim -f +1
+	editor = mvim -f +1
 	excludesfile = ~/.gitignore_global
 	eol = lf
 	#autocrlf = input

@@ -50,7 +50,7 @@ alias la='ls -A'
 alias ll='ls -lh'
 alias lla='ll -A'
 alias grep='grep --color=auto'
-alias rc='vim ~/.bashrc'
+alias rc='mvim ~/.bashrc'
 
 # Git
 GIT_PS1_SHOWDIRTYSTATE=1      # *: unstaged, +: staged changes
@@ -78,9 +78,9 @@ brew-up () {
 }
 
 # Vim
-mvim () { /usr/local/bin/mvim "$@" >/dev/null; }
-alias e='vim'
-export EDITOR='vim -f'
+alias e='mvim'
+export EDITOR='mvim -f'
+mvim () { /usr/local/bin/mvim "$@" >/dev/null ; }
 
 # Mercurial
 export LC_ALL='en_US.UTF-8'
