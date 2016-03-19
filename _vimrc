@@ -14,8 +14,9 @@ set showcmd   " show partial normal-mode commands
 
 colorscheme solarized
 
-if has("gui_running")
-  set guifont=Menlo:h12
+if has('gui_running')
+  set guifont=Fantasque\ Sans\ Mono:h13
+  set linespace=1
   set guioptions-=T               " no toolbar
   set fuoptions=maxvert,maxhorz   " actually fill the screen in full screen mode
   set visualbell                  " don't beep
