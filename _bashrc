@@ -114,71 +114,76 @@ alias gems='gem query --remote --name-matches'
 # ~/bin
 export PATH="${PATH}:${HOME}/bin"
 
-# myriad shell functions
-# TODO find their origin(s) and credit the author(s) here
+# miscellaneous shell functions
 
-tab () {
-  # Runs a command in a new tab in Terminal.app
-  local command="cd \\\"$PWD\\\""
-  (( $# > 0 )) && command="${command}; $*"
-  osascript 2>/dev/null <<EOF
-    tell application "System Events"
-      tell process "Terminal" to keystroke "t" using command down
-      tell application "Terminal" to do script "${command}" in front window
-    end tell
-EOF
-}
-
-pfd () {
-  # Prints the path to the current folder of the topmost Finder window
-  osascript 2>/dev/null <<EOF
-    tell application "Finder"
-      return POSIX path of (target of window 1 as alias)
-    end tell
-EOF
-}
-
-pfs () {
-  # Prints the paths to all the selected items in the topmost Finder window
-  osascript 2>/dev/null <<EOF
-    set output to ""
-    tell application "Finder" to set the_selection to selection
-    set item_count to count the_selection
-    repeat with item_index from 1 to count the_selection
-      if item_index is less than item_count then set the_delimiter to "\n"
-      if item_index is item_count then set the_delimiter to ""
-      set output to output & ((item item_index of the_selection as alias)'s POSIX path) & the_delimiter
-    end repeat
-EOF
-}
-
-trash () {
-  # Moves files to the Trash
-  for path in "$@"; do
-    echo "Trashing ${path}"
-    local abspath="$(cd "$(dirname "${path}")"; pwd)/$(basename "${path}")"
-    osascript -e "tell app \"Finder\" to move the POSIX file \"${abspath}\" to trash" >/dev/null
-  done
-}
-
-ql () {
-  # Shows the contents of files using Quick Look
-  (( $# > 0 )) && qlmanage -p $* &>/dev/null
+argtest () {
+  python -c 'import sys; print(sys.argv[1:])' "$@"
 }
 
 cdf () {
-  # Changes the current directory to the current folder of the topmost Finder window
+  # Change directory to the topmost Finder window's current folder
   cd "$(pfd)"
 }
 
-man-preview () {
-  # Displays man pages in Preview.app
-  man -t "$@" | open -f -a Preview
+dash () {
+  [ "${1:0:1}" = '-' ] && local docset="${1:1}:" && shift
+  local query="$1" && shift
+  local word ;for word in "$@" ;{ query="${query}+${word}" ;}
+  open "dash://${docset}${query}"
 }
 
 inf-proxy () {
   [ -z "$1" ] && echo 'usage: inf-proxy [username]' >&2 && return 1
   ssh "${1}@portal.inf.ufrgs.br" -L 3128:power-proxy.inf.ufrgs.br:3128
+}
+
+pfd () {
+  # Print the path to the topmost Finder window's current folder
+  osascript <<EOF
+    tell application "Finder"
+      return POSIX path of (insertion location as alias)
+    end tell
+EOF
+}
+
+pman () {
+  # View man page in Preview.app
+  man -t "$@" | open -f -a Preview
+}
+
+ql () {
+  # Show the contents of files using Quick Look
+  (( $# > 0 )) && qlmanage -p "$@" &>/dev/null
+}
+
+serve () {
+  # Start an impromptu HTTP static file server from the current directory
+  local path="${1:-.}" port="${2:-8000}"
+  echo -n "http://${HOSTNAME}:${port}/" | pbcopy
+  ( cd "$path" && python3 -m http.server "${port}" )
+}
+
+tabname () {
+  # Set the title of the current Terminal tab
+  # http://thelucid.com/2012/01/04/naming-your-terminal-tabs-in-osx-lion/
+  local name="$@"
+  printf "\e]1;${name}\a"
+}
+
+winname () {
+  # Set the title of the current Terminal window
+  # http://thelucid.com/2012/01/04/naming-your-terminal-tabs-in-osx-lion/
+  local name="$@"
+  printf "\e]2;${name}\a"
+}
+
+yd () {
+  if [ "$1" = '-l' ] ; then
+    local options=(--format '[height <=? 720]') && shift
+  else
+    local options=()
+  fi
+  ( cd ~/Downloads && youtube-dl "${options[@]}" "$@" )
 }
 
 # vim:ft=sh
