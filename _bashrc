@@ -2,30 +2,45 @@
 [ -f /usr/local/etc/bash_completion ] && source /usr/local/etc/bash_completion
 
 # prompt
-__bashrc_ps1 () {
-  local reset='\[\e[0m\]'
+_bashrc_set_prompt () {
+  local st=$?  # save the latest exit status
+
+  # ANSI cheatsheet
+  # 1: bold
+  # 4: underlined
+  # 7: reversed
+  # 3[0-7]: set normal foreground color (0=K 1=R 2=G 3=Y 4=B 5=M 6=C 7=W)
+  # 4[0-7]: set normal background color
+  # 9[0-7]: set bright foreground color
+  # 10[0-7]: set bright background color
 
   # styles (tweaked for Solarized with dark background)
-  local error_style='\[\e[1;7;31m\]'  # bold, reversed, red
-  local arrow_style='\[\e[0;96m\]'    # regular, bright cyan
-  local prompt_style='\[\e[1;96m\]'   # bold, bright cyan
-  local git_style='\[\e[1;4;96m\]'    # bold, underlined, bright cyan
+  local _reset="\[\e[0m\]"
+  local _error="\[\e[1;7;31m\]"
+  local _arrow="\[\e[96m\]"
+  local _info="\[\e[1;96m\]"
+  local _git="\[\e[7;95m\]" git_boxed=1  # boxed purple
+  #local _git="\[\e[1;91m\]" git_boxed=   # bold orange
 
-  _errst () { local st=$?; [ $st -ne 0 ] && printf "${1}${st}${2}"; }
-  local errst="${reset}\$(_errst '${error_style} ' ' ${reset}\n ')"
-  local prompt="${prompt_style}\w${reset}\$(__git_ps1 ' ${git_style}|%s|')${reset}"
+  # glyphs (Terminal.app: Fantasque Sans Mono 14, line spacing 0.8)
+  local arrow1="${_arrow}╭${_reset}"
+  local arrow2="${_arrow}╰─>${_reset}"
+  local ellipsis="${_arrow}…${_reset}"
+  #local box_l='▌' box_sep='│' box_r='▐'
+  local box_l='▌' box_sep='|' box_r='▐'
+  local gl="${git_boxed:+$box_l}" gr="${git_boxed:+$box_r}"
+  GIT_PS1_STATESEPARATOR="$box_sep"
 
-  # one-line prompt
-  #PS1="${errst}\n${prompt} "
-  #PS2='… '
+  # sections
+  _error_ps1 () { local st=$? ; [ $st -ne 0 ] && printf "$1" $st ; }
+  local error="${_error}\$(_error_ps1 \"${box_l}%s${box_r}\")${_reset}"
+  local info="${_info}\w${_reset}"
+  local git_info="${_git}\$(__git_ps1 \"${gl}%s${gr}\")${_reset}"
 
-  # two-line prompt (the arrow looks best with Menlo)
-  _arrow () { printf "${arrow_style}${1}${reset}"; }
-  local arrow1="$(_arrow '╭')"
-  local arrow2="$(_arrow '╰─►')"
-  PS1="${errst}\n${arrow1} ${prompt}\n${arrow2} "
-  PS2="${arrow2} "
-} && __bashrc_ps1
+  # all together now
+  PS1="${_reset}${error}\n${arrow1} ${info} ${git_info}\n${arrow2} "
+  PS2=" ${ellipsis}  "
+} && _bashrc_set_prompt
 
 # aliases
 alias ..='cd ..'
@@ -38,10 +53,11 @@ alias grep='grep --color=auto'
 alias rc='vim ~/.bashrc'
 
 # Git
-GIT_PS1_SHOWDIRTYSTATE=1
-GIT_PS1_SHOWSTASHSTATE=1
-GIT_PS1_SHOWUNTRACKEDFILES=1
-GIT_PS1_SHOWUPSTREAM='auto'
+GIT_PS1_SHOWDIRTYSTATE=1      # *: unstaged, +: staged changes
+GIT_PS1_SHOWSTASHSTATE=1      # $: stash is not empty
+GIT_PS1_SHOWUNTRACKEDFILES=1  # %: untracked files
+GIT_PS1_SHOWUPSTREAM='auto'   # <: behind, >: ahead, <>: diverged, =: same
+#GIT_PS1_SHOWCOLORHINTS=1
 alias g='git' &&
   complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
 alias gci='git commit --verbose'
