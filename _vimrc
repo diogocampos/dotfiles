@@ -42,6 +42,8 @@ set splitright          " put new vsplits to the right of the current one
 
 set wildmode=list:longest,list:full   " sensible command line completion
 
+set ttimeoutlen=0       " no delay when hitting Esc in a terminal
+
 "" Whitespace
 
 set autoindent      " new lines copy the current line's indentation
