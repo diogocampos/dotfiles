@@ -6,27 +6,42 @@ import os
 import os.path as path
 import sys
 
-def abort(message):
-    sys.stderr.write('%s\n' % message)
-    sys.exit(1)
 
-def get_confirmation(message):
-    reply = raw_input('%s [y/N]: ' % message)
-    return reply.strip().lower().startswith('y')
+def main(argv):
+    dotfiles_dir, prog_name = path.split(argv[0])
+    args = argument_parser(prog_name).parse_args(argv[1:])
 
-def colored(color, text):
-    escape = '\033[%sm'
-    colors = {
-      'k' : escape % 30,    # black
-      'r' : escape % 31,    # red
-      'g' : escape % 32,    # green
-      'y' : escape % 33,    # yellow
-      'b' : escape % 34,    # blue
-      'm' : escape % 35,    # magenta
-      'c' : escape % 36,    # cyan
-      'w' : escape % 37}    # white
-    reset = escape % 0
-    return colors[color.lower()] + text + reset
+    target_dir = args.target_dir()
+    if not path.exists(target_dir):
+        abort('Path %r does not exist.' % target_dir)
+    if not path.isdir(target_dir):
+        abort('%r is not a directory.' % target_dir)
+
+    install_symlinks(dotfiles_dir, target_dir, args.dry_run, args.confirm)
+
+
+def argument_parser(prog_name=None):
+    parser = argparse.ArgumentParser(
+        prog        = prog_name,
+        description = 'Install dotfiles as symbolic links.')
+
+    parser.add_argument('target_dir',
+        nargs   = '?',
+        type    = lambda string: (lambda: string),
+        default = lambda: os.environ['HOME'],
+        help    = 'the directory that will contain the links (default: $HOME)')
+
+    parser.add_argument('-d', '--dry-run',
+        action = 'store_true',
+        help   = "don't install anything; just show what would happen")
+
+    parser.add_argument('-y', '--yes',
+        dest   = 'confirm',
+        action = 'store_false',
+        help   = "don't ask for confirmation before installing")
+
+    return parser
+
 
 def install_symlinks(dotfiles_dir, target_dir, dry_run=False, confirm=True):
     """
@@ -80,39 +95,32 @@ def install_symlinks(dotfiles_dir, target_dir, dry_run=False, confirm=True):
 
     print('Done.')
 
-def argument_parser(prog_name=None):
-    parser = argparse.ArgumentParser(
-        prog        = prog_name,
-        description = 'Install dotfiles as symbolic links.')
 
-    parser.add_argument('target_dir',
-        nargs   = '?',
-        type    = lambda string: (lambda: string),
-        default = lambda: os.environ['HOME'],
-        help    = 'the directory that will contain the links (default: $HOME)')
+def abort(message):
+    sys.stderr.write('%s\n' % message)
+    sys.exit(1)
 
-    parser.add_argument('-d', '--dry-run',
-        action = 'store_true',
-        help   = "don't install anything; just show what would happen")
 
-    parser.add_argument('-y', '--yes',
-        dest   = 'confirm',
-        action = 'store_false',
-        help   = "don't ask for confirmation before installing")
+def get_confirmation(message):
+    reply = raw_input('%s [y/N]: ' % message)
+    return reply.strip().lower().startswith('y')
 
-    return parser
 
-def main(argv):
-    dotfiles_dir, prog_name = path.split(argv[0])
-    args = argument_parser(prog_name).parse_args(argv[1:])
+def colored(color, text):
+    escape = '\033[%sm'
+    colors = {
+      'k' : escape % 30,    # black
+      'r' : escape % 31,    # red
+      'g' : escape % 32,    # green
+      'y' : escape % 33,    # yellow
+      'b' : escape % 34,    # blue
+      'm' : escape % 35,    # magenta
+      'c' : escape % 36,    # cyan
+      'w' : escape % 37}    # white
+    reset = escape % 0
+    return colors[color.lower()] + text + reset
 
-    target_dir = args.target_dir()
-    if not path.exists(target_dir):
-        abort('Path %r does not exist.' % target_dir)
-    if not path.isdir(target_dir):
-        abort('%r is not a directory.' % target_dir)
-
-    install_symlinks(dotfiles_dir, target_dir, args.dry_run, args.confirm)
 
 if __name__ == '__main__':
-    main(sys.argv)
+    status = main(sys.argv)
+    sys.exit(status)
