@@ -65,7 +65,8 @@ def install_symlinks(dotfiles_dir, target_dir, dry_run=False, confirm=True):
             continue
 
         if path.islink(linkpath):
-            if path.samefile(abspath, path.realpath(linkpath)):
+            realpath = path.realpath(linkpath)
+            if path.exists(realpath) and path.samefile(abspath, realpath):
                 print(skipping_link % linkpath)
                 continue
 
