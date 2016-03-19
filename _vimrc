@@ -84,14 +84,14 @@ set smartcase   " don't ignore case when the pattern has uppercase characters
 set foldmethod=syntax nofoldenable
 nnoremap <Space> za
 
-if has("autocmd")
+if has('autocmd')
   au FileType coffee setlocal foldmethod=indent nofoldenable
   au FileType python setlocal foldmethod=indent nofoldenable
 endif
 
 "" Keyword lookup
 
-if has("autocmd")
+if has('autocmd')
   au FileType python   setlocal keywordprg=pydoc
   au FileType vim,help setlocal keywordprg=:help
 endif
@@ -127,7 +127,7 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 
-if has("gui_macvim")
+if has('gui_macvim')
   " indent and unindent on Cmd-] and Cmd-[
   nnoremap <D-[> <<
   nnoremap <D-]> >>
@@ -153,8 +153,8 @@ nmap <Leader>et :tabedit <C-R>=expand('%:h').'/'<CR>
 function! <SID>StripTrailingWhitespace()
   " save most recent search pattern and current cursor position
   let _s = @/
-  let l = line(".")
-  let c = col(".")
+  let l = line('.')
+  let c = col('.')
   " do it
   %s/\s\+$//e
   " restore search pattern and cursor position
