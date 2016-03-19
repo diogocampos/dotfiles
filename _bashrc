@@ -92,6 +92,7 @@ export LANG='en_US.UTF-8'
 # npm
 export PATH="${PATH}:./node_modules/.bin"
 export PATH="${PATH}:/usr/local/share/npm/bin"
+alias npm-up='npm update --global'
 
 # OS X
 alias airports='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -s'
@@ -99,7 +100,8 @@ alias launchservices-hockenberry='/System/Library/Frameworks/CoreServices.framew
 alias launchservices-siracusa='/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user'
 
 # Python
-alias py='python'
+alias py='python2'
+alias py3='python3'
 export PYTHONSTARTUP="${HOME}/.pythonstartup"
 
 # rbenv
