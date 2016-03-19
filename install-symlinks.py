@@ -81,20 +81,24 @@ def install_symlinks(dotfiles_dir, target_dir, dry_run=False, confirm=True):
     print('Done.')
 
 def argument_parser(prog_name=None):
-    parser = argparse.ArgumentParser(prog=prog_name,
-            description='Install dotfiles as symbolic links.')
+    parser = argparse.ArgumentParser(
+        prog        = prog_name,
+        description = 'Install dotfiles as symbolic links.')
 
-    parser.add_argument('target_dir', nargs='?',
-            type=lambda string: (lambda: string),
-            default=lambda: os.environ['HOME'],
-            help='the directory that will contain the links (default: $HOME)')
+    parser.add_argument('target_dir',
+        nargs   = '?',
+        type    = lambda string: (lambda: string),
+        default = lambda: os.environ['HOME'],
+        help    = 'the directory that will contain the links (default: $HOME)')
 
-    parser.add_argument('-d', '--dry-run', action='store_true',
-            help="don't install anything; just show what would happen")
+    parser.add_argument('-d', '--dry-run',
+        action = 'store_true',
+        help   = "don't install anything; just show what would happen")
 
     parser.add_argument('-y', '--yes',
-            dest='confirm', action='store_false',
-            help="don't ask for confirmation before installing")
+        dest   = 'confirm',
+        action = 'store_false',
+        help   = "don't ask for confirmation before installing")
 
     return parser
 
