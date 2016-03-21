@@ -82,7 +82,6 @@ set smartcase   " don't ignore case when the pattern has uppercase characters
 "" Folding
 
 set foldmethod=syntax nofoldenable
-nnoremap <Space> za
 
 if has('autocmd')
   au FileType coffee setlocal foldmethod=indent nofoldenable
@@ -116,6 +115,8 @@ let delimitMate_expand_space = 1
 imap <C-L> <Plug>CapsLockToggle
 
 "" Key mappings
+
+inoremap jj <Esc>
 
 noremap  j gj
 noremap  k gk
