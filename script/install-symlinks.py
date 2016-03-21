@@ -8,7 +8,8 @@ import sys
 
 
 def main(argv):
-    dotfiles_dir, prog_name = path.split(argv[0])
+    script_dir, prog_name = path.split(argv[0])
+    dotfiles_dir = path.join(script_dir, '..')
     args = argument_parser(prog_name).parse_args(argv[1:])
 
     target_dir = args.target_dir()
