@@ -99,20 +99,11 @@ endif
 
 set laststatus=2  " always show a status line
 
-"" Netrw
-
-let g:netrw_liststyle = 3     " tree-style listing
-let g:netrw_browse_split = 4  " open file in previous window
-let g:netrw_preview = 1       " show preview in a vertical split
 
 "" delimitMate
 
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
-
-"" vim-capslock
-
-imap <C-L> <Plug>CapsLockToggle
 
 "" Key mappings
 
@@ -120,24 +111,7 @@ inoremap jj <Esc>
 
 noremap  j gj
 noremap  k gk
-noremap  Q gw
 nnoremap Y y$
-
-nnoremap <C-H> <C-W><C-H>
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-
-if has('gui_macvim')
-  " indent and unindent on Cmd-] and Cmd-[
-  nnoremap <D-[> <<
-  nnoremap <D-]> >>
-  vnoremap <D-[> <gv
-  vnoremap <D-]> >gv
-
-  " quick access to .vimrc on Cmd-Shift-,
-  noremap  <D-<> :split $MYVIMRC<CR>
-endif
 
 noremap \ ,
 let mapleader = ','
