@@ -26,12 +26,6 @@ To see all the options supported by the script, run:
     $ script/install-symlinks.py --help
 
 
-(Outdated) screenshot
----------------------
-
-![](screenshot.png)
-
-
 Thanks
 ------
 
