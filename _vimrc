@@ -95,10 +95,12 @@ if has('autocmd')
   au FileType vim,help setlocal keywordprg=:help
 endif
 
-"" Status line
+"" Airline
 
 set laststatus=2  " always show a status line
+set noshowmode    " don't show mode names in the last line
 
+let g:airline_powerline_fonts = 1
 
 "" delimitMate
 
