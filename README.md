@@ -1,5 +1,5 @@
-dotfiles
-========
+Diogo's dotfiles
+================
 
 
 Installation
@@ -14,7 +14,7 @@ Installation
 
 The `install-symlinks.py` script asks for confirmation before creating symlinks
 in a directory of your choice, defaulting to `$HOME`.  **Conflicting symlinks
-will be overwritten**, but existing files and directories will not be affected.
+will be overwritten**, but existing files and directories are not affected.
 
 You can preview all the changes without applying them by using the
 `-d`/`--dry-run` flag:
@@ -32,6 +32,7 @@ Thanks
 * [Drew Neil][nelstrom] and his excellent [Vimcasts][vimcasts]
 * [Tim Pope][tpope]'s awesome [Vim plugins][tpope-repos]
 * [dotfiles.github.io](https://dotfiles.github.io/)
+
 
 [nelstrom]: https://github.com/nelstrom/
 [tpope]: https://github.com/tpope/
