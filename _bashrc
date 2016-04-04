@@ -175,6 +175,14 @@ winname () {
   printf "\e]2;${name}\a"
 }
 
+wtf () {
+  if [ "$(type -t "$1")" = 'file' ] ; then
+    ls -lh "$(which "$1")"
+  else
+    type "$1"
+  fi
+}
+
 yd () {
   if [ "$1" = '-l' ] ; then
     local options=(--format '[height <=? 720]') && shift
