@@ -84,6 +84,7 @@ brew-up () {
 alias e='mvim'
 export EDITOR='mvim -f'
 mvim () { /usr/local/bin/mvim "$@" >/dev/null ; }
+alias vim-up='~/Code/dotfiles/script/update-vim-plugins'
 
 # Mercurial
 export LC_ALL='en_US.UTF-8'
