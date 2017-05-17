@@ -91,11 +91,11 @@ export LC_ALL='en_US.UTF-8'
 export LANG='en_US.UTF-8'
 
 # npm
-export PATH="${PATH}:./node_modules/.bin"
+export PATH="./node_modules/.bin:${PATH}"
 export PATH="${PATH}:/usr/local/share/npm/bin"
 alias npm-up='npm update --global'
 
-# OS X
+# macOS
 alias airports='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -s'
 alias launchservices-hockenberry='/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -seed -r'
 alias launchservices-siracusa='/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user'
@@ -112,7 +112,11 @@ alias gems='gem query --remote --name-matches'
 # ~/bin
 export PATH="${PATH}:${HOME}/bin"
 
-# miscellaneous shell functions
+# miscellaneous functions
+
+abspath () {
+  python -c 'import os.path, sys; print(os.path.abspath(sys.argv[1]))' "$1"
+}
 
 argtest () {
   python -c 'import sys; print(sys.argv[1:])' "$@"
@@ -124,9 +128,10 @@ cdf () {
 }
 
 dash () {
+  # usage: dash [-docset] query
   [ "${1:0:1}" = '-' ] && local docset="${1:1}:" && shift
   local query="$1" && shift
-  local word ;for word in "$@" ;{ query="${query}+${word}" ;}
+  local word ; for word in "$@" ; { query="${query}+${word}" ; }
   open "dash://${docset}${query}"
 }
 
@@ -137,11 +142,11 @@ inf-proxy () {
 
 pfd () {
   # Print the path to the topmost Finder window's current folder
-  osascript <<EOF
+  osascript -e '
     tell application "Finder"
       return POSIX path of (insertion location as alias)
     end tell
-EOF
+  '
 }
 
 pman () {
@@ -154,9 +159,17 @@ ql () {
   (( $# > 0 )) && qlmanage -p "$@" &>/dev/null
 }
 
+que () {
+  if [ "$(type -t "$1")" = 'file' ] ; then
+    ls -lh "$(which "$1")"
+  else
+    type "$1"
+  fi
+}
+
 serve () {
   # Start an impromptu HTTP static file server from the current directory
-  local path="${1:-.}" port="${2:-8000}"
+  local path="${1:-.}" port="${2:-3333}"
   echo -n "http://${HOSTNAME}:${port}/" | pbcopy
   ( cd "$path" && python3 -m http.server "${port}" )
 }
@@ -175,14 +188,6 @@ winname () {
   printf "\e]2;${name}\a"
 }
 
-wtf () {
-  if [ "$(type -t "$1")" = 'file' ] ; then
-    ls -lh "$(which "$1")"
-  else
-    type "$1"
-  fi
-}
-
 yd () {
   if [ "$1" = '-l' ] ; then
     local options=(--format '[height <=? 720]') && shift
@@ -192,4 +197,4 @@ yd () {
   ( cd ~/Downloads && youtube-dl "${options[@]}" "$@" )
 }
 
-# vim:ft=sh
+# vim: ft=sh
