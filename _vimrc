@@ -1,5 +1,6 @@
 set nocompatible
 set noexrc
+set nomodeline
 
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
