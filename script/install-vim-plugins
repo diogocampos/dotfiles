@@ -24,11 +24,21 @@ cd "$(dirname "$0")/.."
 
 for repo in "${PLUGINS[@]}" ; do
   plugin_dir="_vim/bundle/${repo#*/}"
+  printf "\e[33m${repo}:\e[0m "
+
   if [ ! -e "$plugin_dir" ] ; then
-    printf "\e[33m${repo}\e[0m\n"
+    # new plugin, install it
     git clone "https://github.com/${repo}.git" "$plugin_dir"
-    ( cd "$plugin_dir" && git submodule update --init --recursive )
+  else
+    # existing plugin, update it
+    ( cd "$plugin_dir" && git pull )
   fi
+
+  # fetch or update submodules if necessary
+  ( cd "$plugin_dir" && git submodule update --init --recursive )
 done
 
+# TODO uninstall plugins that are no longer on the list
+
+# rebuild help tags
 vim +Helptags +q
