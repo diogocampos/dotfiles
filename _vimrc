@@ -17,7 +17,7 @@ colorscheme gruvbox
 
 if has('gui_running')
   set guifont=Fantasque\ Sans\ Mono:h13
-  set linespace=1
+  set linespace=2
   set guioptions-=T               " no toolbar
   set guioptions-=r               " no vertical scrollbar
   set fuoptions=maxvert,maxhorz   " actually fill the screen in full screen mode
