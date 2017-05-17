@@ -8,7 +8,7 @@ Installation
 ### Quick start
 
     $ git clone git://github.com/diogocampos/dotfiles.git
-    $ dotfiles/script/setup
+    $ dotfiles/scripts/setup
 
 ### Details
 
@@ -19,11 +19,11 @@ will be overwritten**, but existing files and directories are not affected.
 You can preview all the changes without applying them by using the
 `-d`/`--dry-run` flag:
 
-    $ script/install-symlinks [target_dir] --dry-run
+    $ scripts/install-symlinks [target_dir] --dry-run
 
 To see all the options supported by the script, run:
 
-    $ script/install-symlinks --help
+    $ scripts/install-symlinks --help
 
 
 Thanks
