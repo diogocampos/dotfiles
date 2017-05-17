@@ -48,8 +48,8 @@ set ttimeoutlen=0       " no delay when hitting Esc in a terminal
 
 set autoindent      " new lines copy the current line's indentation
 set tabstop=8       " tab characters snap the cursor to multiples of this value
-set softtabstop=4   " mixes tabs and spaces when `et` is off and `ts` != `sts`
-set shiftwidth=4    " distance used by `>` and `<`
+set softtabstop=2   " mixes tabs and spaces when `et` is off and `ts` != `sts`
+set shiftwidth=2    " distance used by `>` and `<`
 set shiftround      " snap indents to multiples of `shiftwidth`
 set expandtab       " indent with spaces, not tabs
 
