@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 PLUGINS=(
   altercation/vim-colors-solarized
@@ -22,6 +22,9 @@ PLUGINS=(
 set -e
 cd "$(dirname "$0")/.."
 
+
+# Install or update listed plugins
+
 for repo in "${PLUGINS[@]}" ; do
   plugin_dir="_vim/bundle/${repo#*/}"
   printf "\e[33m${repo}:\e[0m "
@@ -38,7 +41,7 @@ for repo in "${PLUGINS[@]}" ; do
   ( cd "$plugin_dir" && git submodule update --init --recursive )
 done
 
-# TODO uninstall plugins that are no longer on the list
 
-# rebuild help tags
+# Update help tags
+
 vim +Helptags +q
