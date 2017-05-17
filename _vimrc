@@ -53,13 +53,15 @@ set shiftwidth=4    " distance used by `>` and `<`
 set shiftround      " snap indents to multiples of `shiftwidth`
 set expandtab       " indent with spaces, not tabs
 
-set listchars=tab:▸\ ,trail:·   " highlight tabs and trailing spaces
+set listchars=tab:▸\ ,trail:·   " make tabs and trailing whitespace visible
 set list
 
 if has('autocmd')
   au FileType coffee     setlocal ts=2 sts=2 sw=2   et
-  au FileType *css       setlocal ts=2 sts=2 sw=2   et
+  au FileType css        setlocal ts=2 sts=2 sw=2   et
   au FileType git*       setlocal ts=8 sts=8 sw=8 noet nolist
+  au FileType go         setlocal ts=4 sts=4 sw=4 noet
+  au FileType html,xml   setlocal ts=2 sts=2 sw=2   et
   au FileType jade       setlocal ts=2 sts=2 sw=2   et
   au FileType javascript setlocal ts=2 sts=2 sw=2   et
   au FileType json       setlocal ts=2 sts=2 sw=2   et
@@ -67,9 +69,8 @@ if has('autocmd')
   au FileType markdown   setlocal ts=4 sts=4 sw=4   et
   au FileType python     setlocal ts=4 sts=4 sw=4   et
   au FileType ruby,eruby setlocal ts=2 sts=2 sw=2   et
-  au FileType *sh        setlocal ts=8 sts=2 sw=2   et
+  au FileType sh         setlocal ts=8 sts=2 sw=2   et
   au FileType vim        setlocal ts=2 sts=2 sw=2   et
-  au FileType *ml        setlocal ts=2 sts=2 sw=2   et
 endif
 
 "" Searching
