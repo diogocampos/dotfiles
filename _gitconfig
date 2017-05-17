@@ -1,7 +1,7 @@
 # vim:ft=gitconfig
 [user]
 	name = Diogo Campos
-	email = diogocampos@me.com
+	email = diogocampos@users.noreply.github.com
 [alias]
 	br = branch -vv
 	cdiff = diff --cached
