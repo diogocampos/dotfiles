@@ -1,8 +1,13 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 
 set -e
 cd "$(dirname "$0")/.."
 
-script/install-symlinks
-script/install-vim-plugins
+SCRIPTS="$(dirname "$0")"
+
+
+$SCRIPTS/install-symlinks
+
+echo 'Installing/updating Vim plugins...'
+$SCRIPTS/install-vim-plugins
