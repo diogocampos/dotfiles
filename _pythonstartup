@@ -1,8 +1,4 @@
 from math import *
-from md5 import md5
 from pprint import pprint as pp
-
-def MD5(string):
-    return md5(string).hexdigest().upper()
 
 # vim:ft=python
