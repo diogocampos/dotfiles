@@ -1,1 +1,214 @@
-[ -f ~/.bashrc ] && source ~/.bashrc
+# bash completion
+[ -f /usr/local/etc/bash_completion ] && source /usr/local/etc/bash_completion
+
+# prompt
+_bash_profile_set_prompt () {
+  local st=$?  # save the latest exit status
+
+  # ANSI cheatsheet
+  # 1: bold
+  # 4: underlined
+  # 7: reversed
+  # 3[0-7]: set normal foreground color (0=K 1=R 2=G 3=Y 4=B 5=M 6=C 7=W)
+  # 4[0-7]: set normal background color
+  # 9[0-7]: set bright foreground color
+  # 10[0-7]: set bright background color
+
+  # styles (tweaked for Solarized with dark background)
+  local _reset="\[\e[0m\]"
+  local _error="\[\e[1;7;31m\]"
+  local _arrow="\[\e[96m\]"
+  local _info="\[\e[1;96m\]"
+  local _git="\[\e[7;95m\]" git_boxed=1  # boxed purple
+  #local _git="\[\e[1;91m\]" git_boxed=   # bold orange
+
+  # glyphs (Terminal.app: Fantasque Sans Mono 14, line spacing 0.8)
+  local arrow1="${_arrow}╭${_reset}"
+  local arrow2="${_arrow}╰─>${_reset}"
+  local ellipsis="${_arrow}…${_reset}"
+  local box_l='▌' box_sep='│' box_r='▐'
+  local gl="${git_boxed:+$box_l}" gr="${git_boxed:+$box_r}"
+  GIT_PS1_STATESEPARATOR="$box_sep"
+
+  # sections
+  _error_ps1 () { local st=$? ; [ $st -ne 0 ] && printf "$1" $st ; }
+  local error="${_error}\$(_error_ps1 \"${box_l}%s${box_r}\")${_reset}"
+  local info="${_info}\w${_reset}"
+  local git_info="${_git}\$(__git_ps1 \"${gl}%s${gr}\")${_reset}"
+
+  # all together now
+  PS1="${_reset}${error}\n${arrow1} ${info} ${git_info}\n${arrow2} "
+  PS2=" ${ellipsis}  "
+} && _bash_profile_set_prompt
+
+# aliases
+alias ..='cd ..'
+alias ls='ls -G'
+alias l='ls'
+alias la='ls -A'
+alias ll='ls -lh'
+alias lla='ll -A'
+alias grep='grep --color=auto'
+alias rc='mvim ~/.bash_profile'
+
+# Git
+GIT_PS1_SHOWDIRTYSTATE=1      # *: unstaged, +: staged changes
+GIT_PS1_SHOWSTASHSTATE=1      # $: stash is not empty
+GIT_PS1_SHOWUNTRACKEDFILES=1  # %: untracked files
+GIT_PS1_SHOWUPSTREAM='auto'   # <: behind, >: ahead, <>: diverged, =: same
+#GIT_PS1_SHOWCOLORHINTS=1
+alias g='git' &&
+  complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
+ga () { git add "$@" && git status --branch --short ; }
+alias ga.='ga .'
+alias gci='git commit --verbose'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gl='git log --graph --oneline'
+alias gs='git status --branch --short'
+
+# Go
+#export PATH="${PATH}:/usr/local/opt/go/libexec/bin"
+
+# Heroku
+#export PATH="${PATH}:/usr/local/heroku/bin"
+
+# Homebrew
+#export PATH="/usr/local/bin:${PATH}"
+brew-up () {
+  brew update   && echo &&
+  brew outdated && echo &&
+  brew upgrade  && echo &&
+  brew cleanup
+}
+
+# Vim
+alias e='mvim'
+export EDITOR='mvim -f'
+mvim () { /usr/local/bin/mvim "$@" >/dev/null ; }
+alias vim-up='~/Code/dotfiles/scripts/install-vim-plugins'
+
+# Mercurial
+export LC_ALL='en_US.UTF-8'
+export LANG='en_US.UTF-8'
+
+# npm
+export PATH="./node_modules/.bin:${PATH}"
+alias npm-up='npm update --global'
+
+npm-up-bleeding () {
+  # https://gist.github.com/othiym23/4ac31155da23962afd0e
+  for package in $(npm -g outdated --parseable --depth=0 | cut -d: -f3) ; do
+    npm -g install "$package"
+  done
+}
+
+# macOS
+alias airports='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -s'
+alias launchservices-hockenberry='/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -seed -r'
+alias launchservices-siracusa='/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user'
+
+# Python
+alias py='python2'
+alias py3='python3'
+export PYTHONSTARTUP="${HOME}/.pythonstartup"
+export PIPENV_VENV_IN_PROJECT=1
+#eval "$(pipenv --completion)"
+#[ command -v pyenv 1>/dev/null 2>&1 ] && eval "$(pyenv init -)"
+
+# Ruby
+alias bx='bundle exec'
+alias gems='gem query --remote --name-matches'
+
+# Yarn
+#export PATH="${PATH}:$(yarn global bin)"
+
+# ~/bin
+#export PATH="${PATH}:${HOME}/bin"
+
+# miscellaneous functions
+
+abspath () {
+  python -c 'import os.path, sys; print(os.path.abspath(sys.argv[1]))' "$1"
+}
+
+argtest () {
+  python -c 'import sys; print(sys.argv[1:])' "$@"
+}
+
+cdf () {
+  # Change directory to the topmost Finder window's current folder
+  cd "$(pfd)"
+}
+
+dash () {
+  # usage: dash [-docset] query
+  [ "${1:0:1}" = '-' ] && local docset="${1:1}:" && shift
+  local query="$1" && shift
+  local word ; for word in "$@" ; { query="${query}+${word}" ; }
+  open "dash://${docset}${query}"
+}
+
+inf-proxy () {
+  [ -z "$1" ] && echo 'usage: inf-proxy [username]' >&2 && return 1
+  ssh "${1}@portal.inf.ufrgs.br" -L 3128:power-proxy.inf.ufrgs.br:3128
+}
+
+pfd () {
+  # Print the path to the topmost Finder window's current folder
+  osascript -e '
+    tell application "Finder"
+      return POSIX path of (insertion location as alias)
+    end tell
+  '
+}
+
+pman () {
+  # View man page in Preview.app
+  man -t "$@" | open -f -a Preview
+}
+
+ql () {
+  # Show the contents of files using Quick Look
+  (( $# > 0 )) && qlmanage -p "$@" &>/dev/null
+}
+
+que () {
+  if [ "$(type -t "$1")" = 'file' ] ; then
+    ls -lh "$(which "$1")"
+  else
+    type "$1"
+  fi
+}
+
+serve () {
+  # Start an impromptu HTTP static file server from the current directory
+  local path="${1:-.}" port="${2:-3333}"
+  echo -n "http://${HOSTNAME}:${port}/" | pbcopy
+  ( cd "$path" && python3 -m http.server "${port}" )
+}
+
+tabname () {
+  # Set the title of the current Terminal tab
+  # http://thelucid.com/2012/01/04/naming-your-terminal-tabs-in-osx-lion/
+  local name="$@"
+  printf "\e]1;${name}\a"
+}
+
+winname () {
+  # Set the title of the current Terminal window
+  # http://thelucid.com/2012/01/04/naming-your-terminal-tabs-in-osx-lion/
+  local name="$@"
+  printf "\e]2;${name}\a"
+}
+
+yd () {
+  if [ "$1" = '-l' ] ; then
+    local options=(--format '[height <=? 720]') && shift
+  else
+    local options=(--format '[height <=? 1080]')
+  fi
+  ( cd ~/Downloads && youtube-dl "${options[@]}" "$@" )
+}
+
+# vim: ft=sh
