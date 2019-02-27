@@ -194,13 +194,6 @@ que () {
   fi
 }
 
-serve () {
-  # Start an impromptu HTTP static file server from the current directory
-  local path="${1:-.}" port="${2:-3333}"
-  echo -n "http://${HOSTNAME}:${port}/" | pbcopy
-  ( cd "$path" && python3 -m http.server "${port}" )
-}
-
 tabname () {
   # Set the title of the current Terminal tab
   # http://thelucid.com/2012/01/04/naming-your-terminal-tabs-in-osx-lion/
