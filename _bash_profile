@@ -66,13 +66,13 @@ GIT_PS1_SHOWUPSTREAM='auto'   # <: behind, >: ahead, <>: diverged, =: same
 #GIT_PS1_SHOWCOLORHINTS=1
 alias g='git' &&
   complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
-ga () { git add "$@" && git status --branch --short ; }
+ga () { git add "$@" && git status --short --branch ; }
 alias ga.='ga .'
 alias gci='git commit --verbose'
 alias gd='git diff'
 alias gdc='git diff --cached'
 alias gl='git log --graph --oneline'
-alias gs='git status --branch --short'
+alias gs='git status --short --branch --show-stash'
 
 # Go
 #export PATH="${PATH}:/usr/local/opt/go/libexec/bin"
@@ -90,18 +90,17 @@ brew-up () {
 }
 
 # Vim
-alias e='mvim'
+alias vim-up='~/Code/dotfiles/scripts/install-vim-plugins'
 export EDITOR='mvim -f'
 mvim () { /usr/local/bin/mvim "$@" >/dev/null ; }
-alias vim-up='~/Code/dotfiles/scripts/install-vim-plugins'
 
 # Mercurial
 export LC_ALL='en_US.UTF-8'
 export LANG='en_US.UTF-8'
 
 # npm
-export PATH="./node_modules/.bin:${PATH}"
 alias npm-up='npm update --global'
+export PATH="./node_modules/.bin:${PATH}"
 
 npm-up-bleeding () {
   # https://gist.github.com/othiym23/4ac31155da23962afd0e
@@ -115,13 +114,17 @@ alias airports='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/
 alias launchservices-hockenberry='/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -seed -r'
 alias launchservices-siracusa='/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user'
 
+# Pipenv
+alias px='pipenv run'
+export PIPENV_VENV_IN_PROJECT=1
+
+# pyenv
+eval "$(pyenv init -)"
+
 # Python
 alias py='python2'
 alias py3='python3'
 export PYTHONSTARTUP="${HOME}/.pythonstartup"
-export PIPENV_VENV_IN_PROJECT=1
-#eval "$(pipenv --completion)"
-#[ command -v pyenv 1>/dev/null 2>&1 ] && eval "$(pyenv init -)"
 
 # Ruby
 alias bx='bundle exec'
