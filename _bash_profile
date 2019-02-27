@@ -51,6 +51,10 @@ alias lla='ll -A'
 alias grep='grep --color=auto'
 alias rc='mvim ~/.bash_profile'
 
+# Bash
+alias nohist='unset HISTFILE'
+export HISTCONTROL='ignorespace:ignoredups'
+
 # Git
 GIT_PS1_SHOWDIRTYSTATE=1      # *: unstaged, +: staged changes
 GIT_PS1_SHOWSTASHSTATE=1      # $: stash is not empty
