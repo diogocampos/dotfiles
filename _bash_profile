@@ -55,6 +55,9 @@ alias rc='mvim ~/.bash_profile'
 alias nohist='unset HISTFILE'
 export HISTCONTROL='ignorespace:ignoredups'
 
+# ~/.bin
+export PATH="${PATH}:${HOME}/.bin"
+
 # Git
 GIT_PS1_SHOWDIRTYSTATE=1      # *: unstaged, +: staged changes
 GIT_PS1_SHOWSTASHSTATE=1      # $: stash is not empty
