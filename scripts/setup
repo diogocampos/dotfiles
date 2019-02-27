@@ -7,7 +7,7 @@ cd "$(dirname "$0")/.."
 SCRIPTS="$(dirname "$0")"
 
 
-$SCRIPTS/install-symlinks
+"$SCRIPTS"/install-symlinks
 
 echo 'Installing/updating Vim plugins...'
-$SCRIPTS/install-vim-plugins
+"$SCRIPTS"/install-vim-plugins
