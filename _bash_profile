@@ -130,6 +130,9 @@ export PYTHONSTARTUP="${HOME}/.pythonstartup"
 alias bx='bundle exec'
 alias gems='gem query --remote --name-matches'
 
+# SourceTree
+alias stree='open -a /Applications/SourceTree.app'
+
 # Yarn
 #export PATH="${PATH}:$(yarn global bin)"
 
