@@ -3,41 +3,11 @@
 	name = Diogo Campos
 	email = diogocampos@users.noreply.github.com
 [alias]
-	br = branch -vv
-	cdiff = diff --cached
-	ci = commit --verbose
+	br = branch -avv
 	co = checkout
-	l = log --graph --oneline
-	last = log -1
-	padd = add --patch
-	rb = rebase
-	rbi = rebase --interactive
-[color]
-	ui = auto
 [core]
-	editor = mvim -f +1
 	excludesfile = ~/.gitignore_global
-	eol = lf
-	#autocrlf = input
-	#safecrlf = true
 [credential]
 	helper = osxkeychain
-[interactive]
-	singlekey = true
-[push]
-	default = simple
-	followTags = true
-[filter "media"]
-	clean = git-media-clean %f
-	smudge = git-media-smudge %f
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	required = true
-	process = git-lfs filter-process
+[includeIf "gitdir:~/Work/"]
+	path = ~/Work/.gitconfig
