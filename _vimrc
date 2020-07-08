@@ -7,8 +7,6 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
-runtime macros/matchit.vim   " enable `%` to jump between if/else/endif, etc
-
 set number    " show line numbers
 set ruler     " show cursor position
 set showcmd   " show partial normal-mode commands
@@ -17,22 +15,19 @@ set background=dark
 colorscheme gruvbox
 
 if has('gui_running')
-  set guifont=Fantasque\ Sans\ Mono:h13
+  set guifont=Fantasque\ Sans\ Mono:h14
   set linespace=2
   set guioptions-=T               " no toolbar
   set guioptions-=r               " no vertical scrollbar
   set fuoptions=maxvert,maxhorz   " actually fill the screen in full screen mode
   set visualbell                  " don't beep
-else
-  set background=dark
 endif
 
 set display+=lastline   " show the window's last line even when it's too long
 set linebreak           " break lines at sensible places
-set scrolloff=3         " always show a few lines above/below the current one
+set scrolloff=2         " always show a few lines above/below the current one
 
 set formatoptions+=or   " auto-insert comment leaders
-set formatprg=par       " external formatter for the `gq` command
 set virtualedit+=block  " let the cursor go anywhere in visual block mode
 
 set autoread            " auto-reload externally modified files
@@ -44,6 +39,7 @@ set splitright          " put new vsplits to the right of the current one
 set wildmode=list:longest,list:full   " sensible command line completion
 
 set ttimeoutlen=0       " no delay when hitting Esc in a terminal
+
 
 "" Whitespace
 
@@ -74,20 +70,15 @@ if has('autocmd')
   au FileType vim        setlocal ts=2 sts=2 sw=2   et
 endif
 
-"" Searching
-
-set hlsearch    " highlight matches
-set incsearch   " search as I type
-set ignorecase  " case-insensitive search
-set smartcase   " don't ignore case when the pattern has uppercase characters
-
 "" Folding
 
 set foldmethod=syntax nofoldenable
 
 if has('autocmd')
   au FileType coffee setlocal foldmethod=indent nofoldenable
+  au FileType json   setlocal foldmethod=syntax nofoldenable
   au FileType python setlocal foldmethod=indent nofoldenable
+  au FileType text   setlocal foldmethod=marker foldmarker=/#,#/ foldenable
 endif
 
 "" Keyword lookup
@@ -96,6 +87,13 @@ if has('autocmd')
   au FileType python   setlocal keywordprg=pydoc
   au FileType vim,help setlocal keywordprg=:help
 endif
+
+"" Searching
+
+set hlsearch    " highlight matches
+set incsearch   " search as I type
+set ignorecase  " case-insensitive search
+set smartcase   " don't ignore case when the pattern has uppercase characters
 
 "" Airline
 
@@ -109,18 +107,37 @@ let g:airline_powerline_fonts = 1
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 
-"" JavaScript & JSX
+"" Prettier
 
-let g:javascript_plugin_flow = 1
-let g:jsx_ext_required = 0
+if has('autocmd')
+  au FileType css        setlocal equalprg=prettier\ --stdin-filepath\ _.css
+  au FileType javascript setlocal equalprg=prettier\ --stdin-filepath\ _.js
+  au FileType json       setlocal equalprg=prettier\ --stdin-filepath\ _.json
+  au FileType markdown   setlocal equalprg=prettier\ --stdin-filepath\ _.markdown
+endif
 
 "" Key mappings
 
 inoremap jj <Esc>
 
-noremap  j gj
-noremap  k gk
+noremap j gj
+noremap k gk
 nnoremap Y y$
+nnoremap cw caw
+
+nnoremap U /\u<CR>
+onoremap U /\u<CR>
+vnoremap U /\u<CR>h
+
+vnoremap p "0p
+
+nnoremap <Space> za
+
+nnoremap <Leader>jq :%!jq '.'<CR>
+vnoremap <Leader>jq :!jq '.'<CR>
+
+cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<CR>
+
 
 noremap \ ,
 let mapleader = ','
