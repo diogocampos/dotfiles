@@ -1,45 +1,49 @@
+source /usr/local/etc/bash_completion.d/git-prompt.sh
+
 # bash completion
 [ -f /usr/local/etc/bash_completion ] && source /usr/local/etc/bash_completion
 
-# prompt
-_bash_profile_set_prompt () {
-  local st=$?  # save the latest exit status
+export BASH_SILENCE_DEPRECATION_WARNING=1
 
-  # ANSI cheatsheet
+# prompt
+_diogo_set_prompt () {
+  local st="${?#0}"
+
   # 1: bold
+  # 2: dim
   # 4: underlined
   # 7: reversed
-  # 3[0-7]: set normal foreground color (0=K 1=R 2=G 3=Y 4=B 5=M 6=C 7=W)
-  # 4[0-7]: set normal background color
-  # 9[0-7]: set bright foreground color
-  # 10[0-7]: set bright background color
+  # 3[0-7]: fg color (0=K 1=R 2=G 3=Y 4=B 5=M 6=C 7=W)
+  # 4[0-7]: bg color
+  # 9[0-7]: bright fg color
+  # 10[0-7]: bright bg color
+  local _reset='\e[0m'
+  local _error='\e[1;7;31m'
+  local _arrow='\e[96m'
+  local _ctx='\e[1;96m'
+  local _time='\e[2;37m'
+  local _git='\e[7;95m'
 
-  # styles (tweaked for Solarized with dark background)
-  local _reset="\[\e[0m\]"
-  local _error="\[\e[1;7;31m\]"
-  local _arrow="\[\e[96m\]"
-  local _info="\[\e[1;96m\]"
-  local _git="\[\e[7;95m\]" git_boxed=1  # boxed purple
-  #local _git="\[\e[1;91m\]" git_boxed=   # bold orange
-
-  # glyphs (Terminal.app: Fantasque Sans Mono 14, line spacing 0.8)
   local arrow1="${_arrow}╭${_reset}"
   local arrow2="${_arrow}╰─>${_reset}"
   local ellipsis="${_arrow}…${_reset}"
-  local box_l='▌' box_sep='│' box_r='▐'
-  local gl="${git_boxed:+$box_l}" gr="${git_boxed:+$box_r}"
-  GIT_PS1_STATESEPARATOR="$box_sep"
+  local bl='▌' bsep='│' br='▐'
 
-  # sections
-  _error_ps1 () { local st=$? ; [ $st -ne 0 ] && printf "$1" $st ; }
-  local error="${_error}\$(_error_ps1 \"${box_l}%s${box_r}\")${_reset}"
-  local info="${_info}\w${_reset}"
-  local git_info="${_git}\$(__git_ps1 \"${gl}%s${gr}\")${_reset}"
+  GIT_PS1_STATESEPARATOR="$bsep"
+  GIT_PS1_SHOWDIRTYSTATE=1      # *: unstaged, +: staged changes
+  GIT_PS1_SHOWSTASHSTATE=1      # $: stash is not empty
+  GIT_PS1_SHOWUNTRACKEDFILES=1  # %: untracked files
+  GIT_PS1_SHOWUPSTREAM='auto'   # <: behind, >: ahead, <>: diverged, =: same
 
-  # all together now
-  PS1="${_reset}${error}\n${arrow1} ${info} ${git_info}\n${arrow2} "
+  printf "${_reset}"
+  [ -n "$st" ] && printf "${_error}${bl}%s${br}${_reset}" "$st"
+  printf "\n${_time}%${COLUMNS}s${_reset}\r" "$(date +'%H:%M')"
+  printf "${arrow1} ${_ctx}%s${_reset}" "${PWD/#$HOME/~}"
+  __git_ps1 " ${_git}${bl}%s${br}${_reset}"
+  PS1="\n${arrow2} "
   PS2=" ${ellipsis}  "
-} && _bash_profile_set_prompt
+}
+PROMPT_COMMAND='_diogo_set_prompt'
 
 # aliases
 alias ..='cd ..'
@@ -59,11 +63,6 @@ export HISTCONTROL='ignorespace:ignoredups'
 export PATH="${PATH}:${HOME}/.bin"
 
 # Git
-GIT_PS1_SHOWDIRTYSTATE=1      # *: unstaged, +: staged changes
-GIT_PS1_SHOWSTASHSTATE=1      # $: stash is not empty
-GIT_PS1_SHOWUNTRACKEDFILES=1  # %: untracked files
-GIT_PS1_SHOWUPSTREAM='auto'   # <: behind, >: ahead, <>: diverged, =: same
-#GIT_PS1_SHOWCOLORHINTS=1
 alias g='git' &&
   complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
 ga () { git add "$@" && git status --short --branch ; }
