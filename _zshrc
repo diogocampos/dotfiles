@@ -1,0 +1,186 @@
+source /usr/local/etc/bash_completion.d/git-prompt.sh
+
+# options
+setopt AUTO_CD
+setopt CORRECT
+setopt PROMPT_SUBST
+
+# completion
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+autoload -Uz compinit && compinit
+
+# prompt
+_diogo_set_prompt () {
+  local N=$'\n' SL='%S▌' SEP='│' SR='▐%s'
+  local I=$'\e[3m' R=$'\e[0m'
+  local BK='8' BR='9' BG='10' BY='11' BB='12' BM='13' BC='14' BW='15'
+
+  local GL=" %F{$BM}$SL" GR="$SR%f"
+  local G="\$(__git_ps1 '${GL//\%/%%}%s${GR//\%/%%}')"
+  GIT_PS1_STATESEPARATOR="$SEP"
+  GIT_PS1_SHOWDIRTYSTATE=1          # *: unstaged, +: staged changes
+  GIT_PS1_SHOWSTASHSTATE=1          # $: stash is not empty
+  GIT_PS1_SHOWUNTRACKEDFILES=1      # %: untracked files
+  GIT_PS1_SHOWUPSTREAM='auto'       # <: behind, >: ahead, <>: diverged, =: same
+
+  local X="%(?..%F{r}$SL%?$SR%f)"   # non-zero exit
+  local F="%(!.%F{r}.%F{c})"        # main fg color
+
+  PROMPT="$X$N$F╭ $I%~$R%f$G$N$F╰─>%f "
+  RPROMPT="%F{$BK}%T%f"
+  PROMPT2="%F{c}%_…%f "
+
+  DIOGO_RPROMPT="$RPROMPT"
+  DIOGO_VICMD="%F{y}--NORMAL--%f"
+} && _diogo_set_prompt
+
+# aliases
+alias ls='ls -G'
+alias l='ls -A'
+alias ll='ls -lhA'
+alias grep='grep --color=auto'
+
+alias ding='echo "\a"'
+alias que='type -s'
+alias nohist='unset HISTFILE'
+alias rc='mvim ~/.zshrc'
+
+# --------
+
+# git
+alias g='git'
+alias gs='git status --short --branch --show-stash'
+ga () { git add "$@" && gs ; }
+gci () { git commit --verbose "$@" && echo && gs ; }
+alias ga.='ga .'
+alias gd='git diff'
+alias gdw='git diff --word-diff=color --word-diff-regex=.'
+alias gdc='git diff --cached'
+alias gl='git log --graph --oneline'
+
+# Homebrew
+brew-up () {
+  brew update   && echo &&
+  brew outdated && echo &&
+  brew upgrade  && echo &&
+  brew cleanup
+}
+
+brew-why () { brew uses "$@" --installed ; }
+
+# npm
+export PATH="${PATH}:./node_modules/.bin"
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+nvm-up () {   # https://github.com/nvm-sh/nvm
+  (
+    cd "$NVM_DIR"
+    git fetch --tags origin
+    git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
+  ) && \. "$NVM_DIR/nvm.sh"
+}
+
+# Python
+alias py='python3'
+export PYTHONSTARTUP="${HOME}/.pythonstartup"
+
+## Pipenv
+alias px='pipenv run'
+#export PATH="${PATH}:./.venv/bin"
+export PIPENV_VENV_IN_PROJECT=1
+
+# pyenv
+#eval "$(pyenv init -)"
+
+# redoc-cli
+alias redoc='redoc-cli serve docs/swagger.yml --watch'
+
+# SourceTree
+#alias stree='open -a /Applications/SourceTree.app'
+
+# Vim
+export PATH="${PATH}:/Applications/MacVim.app/Contents/bin"
+alias vim-up='~/Code/dotfiles/scripts/install-vim-plugins'
+export EDITOR='mvim -f'
+
+# ~/.bin
+#export PATH="${PATH}:${HOME}/.bin"
+
+# --------
+
+abspath () {
+  python3 -c 'import os.path, sys; print(os.path.abspath(sys.argv[1]))' "$1"
+}
+
+argtest () {
+  python3 -c 'import sys; print(sys.argv[1:])' "$@"
+}
+
+cdf () {
+  # Change directory to the topmost Finder window's current folder
+  cd "$(pfd)"
+}
+
+hilite () {
+  grep --color -E -- "$1|\$" "${@:2}"
+}
+
+jqx () {
+  jq -Rr '. as $line | try fromjson catch $line'
+}
+
+kill-by-port () {
+  lsof -i:"$1" && sudo kill $(lsof -t -i:"$1")
+}
+
+pfd () {
+  # Print the path to the topmost Finder window's current folder
+  osascript -e '
+    tell application "Finder"
+      return POSIX path of (insertion location as alias)
+    end tell
+  '
+}
+
+pman () {
+  # View man page in Preview.app
+  man -t "$@" | open -f -a Preview
+}
+
+ql () {
+  # Show the contents of files using Quick Look
+  (( $# > 0 )) && qlmanage -p "$@" &>/dev/null
+}
+
+yd () {
+  if [[ "$1" = '-l' ]] ; then
+    local options=(--format '[height <=? 720]') && shift
+  else
+    local options=(--format '[height <=? 1080]')
+  fi
+  ( cd ~/Downloads && youtube-dl "${options[@]}" "$@" )
+}
+
+# --------
+
+mysql-docker () {
+  local name='mysql-5.7'
+  docker start "$name" || docker run -d mysql:5.7 --name "$name" \
+    -e MYSQL_ROOT_PASSWORD=root \
+    -p 3357:3306
+}
+
+rabbitmq-docker () {
+  docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 \
+    rabbitmq:3-management
+}
+
+# --------
+
+[ -f ~/Work/_zshrc ] && source ~/Work/_zshrc
+true
+
+# vim: ft=zsh
