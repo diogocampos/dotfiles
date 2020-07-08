@@ -1,20 +1,15 @@
 #!/bin/bash
 
 PLUGINS=(
-  altercation/vim-colors-solarized
-  derekwyatt/vim-scala
   ervandew/supertab
-  kchmck/vim-coffee-script
   michaeljsmith/vim-indent-object
   morhetz/gruvbox
-  mxw/vim-jsx
-  pangloss/vim-javascript
   Raimondi/delimitMate
+  sheerun/vim-polyglot
   tpope/vim-commentary
   tpope/vim-pathogen
   tpope/vim-repeat
   tpope/vim-surround
-  tpope/vim-unimpaired
   vim-airline/vim-airline
 )
 
