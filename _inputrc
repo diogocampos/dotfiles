@@ -4,10 +4,6 @@ set completion-ignore-case on
 # show multiple completion matches immediately
 set show-all-if-unmodified on
 
-# search the command history incrementally on Up/Down
-"\e[A": history-search-backward
-"\e[B": history-search-forward
-
 # Ctrl-k clears the current line
 "\C-k": kill-whole-line
 
