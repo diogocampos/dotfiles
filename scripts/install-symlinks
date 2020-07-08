@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import argparse
 import glob
@@ -103,7 +103,7 @@ def abort(message):
 
 
 def get_confirmation(message):
-    reply = raw_input('%s [y/N]: ' % message)
+    reply = input('%s [y/N]: ' % message)
     return reply.strip().lower().startswith('y')
 
 
