@@ -54,8 +54,9 @@ alias ll='ls -lhA'
 alias grep='grep --color=auto'
 
 alias ding='echo "\a"'
-alias que='type -s'
 alias nohist='unset HISTFILE'
+alias que='whence -vS'
+alias quef='que -fx2'
 alias rc='mvim ~/.zshrc'
 
 # --------
