@@ -1,16 +1,16 @@
 #!/bin/bash
 
 PLUGINS=(
-  ervandew/supertab
-  michaeljsmith/vim-indent-object
-  morhetz/gruvbox
   Raimondi/delimitMate
-  sheerun/vim-polyglot
+  morhetz/gruvbox
+  ervandew/supertab
+  vim-airline/vim-airline
   tpope/vim-commentary
+  michaeljsmith/vim-indent-object
   tpope/vim-pathogen
+  sheerun/vim-polyglot
   tpope/vim-repeat
   tpope/vim-surround
-  vim-airline/vim-airline
 )
 
 
