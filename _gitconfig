@@ -11,3 +11,5 @@
 	helper = osxkeychain
 [includeIf "gitdir:~/Work/"]
 	path = ~/Work/.gitconfig
+[init]
+	defaultBranch = main

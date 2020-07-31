@@ -26,7 +26,7 @@ _diogo_set_prompt () {
   local X="%(?..%F{r}$SL%?$SR%f)"   # non-zero exit
   local F="%(!.%F{r}.%F{c})"        # main fg color
 
-  PROMPT="$X$N$F╭ $I%~$R%f$G$N$F╰─>%f "
+  PROMPT="$X$N$F╭ $I%1~$R%f$G$N$F╰─>%f "
   RPROMPT="%F{$BK}%T%f"
   PROMPT2="%F{c}%_…%f "
 
@@ -39,7 +39,7 @@ bindkey -v
 KEYTIMEOUT=1
 function zle-line-init zle-keymap-select {
   # https://web.archive.org/web/*/https://dougblack.io/words/zsh-vi-mode.html
-  RPROMPT="${${KEYMAP/vicmd/$DIOGO_VICMD}/(main|viins)/} $DIOGO_RPROMPT"
+  RPROMPT="${${KEYMAP/vicmd/$DIOGO_VICMD}/(main|viins)/$DIOGO_RPROMPT}"
   zle reset-prompt
 }
 zle -N zle-line-init
@@ -118,7 +118,7 @@ alias redoc='redoc-cli serve docs/swagger.yml --watch'
 # Vim
 export PATH="${PATH}:/Applications/MacVim.app/Contents/bin"
 alias vim-up='~/Code/dotfiles/scripts/install-vim-plugins'
-export EDITOR='mvim -f'
+export GIT_EDITOR='mvim -f'
 
 # ~/.bin
 #export PATH="${PATH}:${HOME}/.bin"

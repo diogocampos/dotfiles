@@ -24,7 +24,7 @@ if has('gui_running')
 endif
 
 set display+=lastline   " show the window's last line even when it's too long
-set linebreak           " break lines at sensible places
+"set linebreak           " break lines at sensible places
 set scrolloff=2         " always show a few lines above/below the current one
 
 set formatoptions+=or   " auto-insert comment leaders
@@ -58,7 +58,7 @@ if has('autocmd')
   au FileType css        setlocal ts=2 sts=2 sw=2   et
   au FileType git*       setlocal ts=8 sts=8 sw=8 noet nolist
   au FileType go         setlocal ts=4 sts=4 sw=4 noet
-  au FileType html,xml   setlocal ts=2 sts=2 sw=2   et
+  au FileType html       setlocal ts=2 sts=2 sw=2   et
   au FileType jade       setlocal ts=2 sts=2 sw=2   et
   au FileType javascript setlocal ts=2 sts=2 sw=2   et
   au FileType json       setlocal ts=2 sts=2 sw=2   et
@@ -68,6 +68,7 @@ if has('autocmd')
   au FileType ruby,eruby setlocal ts=2 sts=2 sw=2   et
   au FileType sh         setlocal ts=8 sts=2 sw=2   et
   au FileType vim        setlocal ts=2 sts=2 sw=2   et
+  au FileType xml        setlocal ts=2 sts=2 sw=2 noet
 endif
 
 "" Folding
@@ -90,7 +91,7 @@ endif
 
 "" Searching
 
-set hlsearch    " highlight matches
+"set hlsearch    " highlight matches
 set incsearch   " search as I type
 set ignorecase  " case-insensitive search
 set smartcase   " don't ignore case when the pattern has uppercase characters
@@ -133,14 +134,16 @@ vnoremap p "0p
 
 nnoremap <Space> za
 
-nnoremap <Leader>jq :%!jq '.'<CR>
-vnoremap <Leader>jq :!jq '.'<CR>
-
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<CR>
 
 
 noremap \ ,
 let mapleader = ','
+
+nnoremap <Leader>go :call <SID>Open()<CR>
+
+nnoremap <Leader>jq :%!jq '.'<CR>
+vnoremap <Leader>jq :!jq '.'<CR>
 
 nnoremap <Leader>/ :set hlsearch!<CR>
 nnoremap <Leader>l :set list!<CR>
@@ -150,6 +153,11 @@ nmap <Leader>ee :edit <C-R>=expand('%:h').'/'<CR>
 nmap <Leader>es :split <C-R>=expand('%:h').'/'<CR>
 nmap <Leader>ev :vsplit <C-R>=expand('%:h').'/'<CR>
 nmap <Leader>et :tabedit <C-R>=expand('%:h').'/'<CR>
+
+
+function! <SID>Open()
+  silent execute "!open " . expand("<cWORD>")
+endfunction
 
 function! <SID>StripTrailingWhitespace()
   " save most recent search pattern and current cursor position
