@@ -16,7 +16,7 @@ colorscheme gruvbox
 
 if has('gui_running')
   set guifont=Fantasque\ Sans\ Mono:h14
-  set linespace=2
+  "set linespace=2
   set guioptions-=T               " no toolbar
   set guioptions-=r               " no vertical scrollbar
   set fuoptions=maxvert,maxhorz   " actually fill the screen in full screen mode
@@ -76,10 +76,11 @@ endif
 set foldmethod=syntax nofoldenable
 
 if has('autocmd')
-  au FileType coffee setlocal foldmethod=indent nofoldenable
-  au FileType json   setlocal foldmethod=syntax nofoldenable
-  au FileType python setlocal foldmethod=indent nofoldenable
-  au FileType text   setlocal foldmethod=marker foldmarker=/#,#/ foldenable
+  au FileType coffee   setlocal foldmethod=indent nofoldenable
+  au FileType json     setlocal foldmethod=syntax nofoldenable
+  au FileType markdown setlocal foldmethod=manual
+  au FileType python   setlocal foldmethod=indent nofoldenable
+  au FileType text     setlocal foldmethod=marker foldmarker=/#,#/ foldenable
 endif
 
 "" Keyword lookup
@@ -87,6 +88,12 @@ endif
 if has('autocmd')
   au FileType python   setlocal keywordprg=pydoc
   au FileType vim,help setlocal keywordprg=:help
+endif
+
+"" Adding and subtracting
+
+if has('autocmd')
+  au FileType text setlocal nrformats-=octal
 endif
 
 "" Searching

@@ -110,7 +110,7 @@ export PIPENV_VENV_IN_PROJECT=1
 #eval "$(pyenv init -)"
 
 # redoc-cli
-alias redoc='redoc-cli serve docs/swagger.yml --watch'
+alias redoc='redoc-cli serve docs/swagger.y*ml --watch'
 
 # SourceTree
 #alias stree='open -a /Applications/SourceTree.app'
