@@ -6,6 +6,7 @@ PLUGINS=(
   ervandew/supertab
   vim-airline/vim-airline
   tpope/vim-commentary
+  machakann/vim-highlightedyank
   michaeljsmith/vim-indent-object
   tpope/vim-pathogen
   sheerun/vim-polyglot
@@ -29,7 +30,7 @@ for repo in "${PLUGINS[@]}" ; do
     git clone "https://github.com/${repo}.git" "$plugin_dir"
   else
     # existing plugin, update it
-    ( cd "$plugin_dir" && git pull )
+    ( cd "$plugin_dir" && git pull --ff-only )
   fi
 
   # fetch or update submodules if necessary
