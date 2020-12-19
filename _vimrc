@@ -110,6 +110,10 @@ set noshowmode    " don't show mode names in the last line
 
 let g:airline_powerline_fonts = 1
 
+"" CamelCaseMotion
+
+let g:camelcasemotion_key = '<leader>'
+
 "" delimitMate
 
 let delimitMate_expand_cr = 1
@@ -160,10 +164,10 @@ nnoremap <Leader>/ :set hlsearch!<CR>
 nnoremap <Leader>l :set list!<CR>
 nnoremap <Leader>4 :call <SID>StripTrailingWhitespace()<CR>
 
-nmap <Leader>ee :edit <C-R>=expand('%:h').'/'<CR>
-nmap <Leader>es :split <C-R>=expand('%:h').'/'<CR>
-nmap <Leader>ev :vsplit <C-R>=expand('%:h').'/'<CR>
-nmap <Leader>et :tabedit <C-R>=expand('%:h').'/'<CR>
+"nmap <Leader>ee :edit <C-R>=expand('%:h').'/'<CR>
+"nmap <Leader>es :split <C-R>=expand('%:h').'/'<CR>
+"nmap <Leader>ev :vsplit <C-R>=expand('%:h').'/'<CR>
+"nmap <Leader>et :tabedit <C-R>=expand('%:h').'/'<CR>
 
 
 function! <SID>Open()

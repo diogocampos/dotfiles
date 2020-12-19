@@ -1,6 +1,7 @@
 #!/bin/bash
 
 PLUGINS=(
+  bkad/CamelCaseMotion
   Raimondi/delimitMate
   morhetz/gruvbox
   ervandew/supertab
