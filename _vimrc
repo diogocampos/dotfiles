@@ -36,6 +36,7 @@ set hidden              " allow background buffers
 set splitbelow          " put new splits below the current one
 set splitright          " put new vsplits to the right of the current one
 
+set wildignorecase      " case-insensitive filename completion
 set wildmode=list:longest,list:full   " sensible command line completion
 
 set ttimeoutlen=0       " no delay when hitting Esc in a terminal
