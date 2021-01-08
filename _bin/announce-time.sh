@@ -4,7 +4,7 @@
 
 dir="$(dirname "$0")"
 
-volume='31'
+volume='38'
 prev_volume="`osascript -e 'output volume of (get volume settings)'`"
 if [ "$prev_volume" -gt "$volume" ] ; then
   osascript -e "set volume output volume ${volume}"
@@ -14,7 +14,7 @@ fi
 #say -v Thomas "Il est `date +'%H:%M'`."
 
 # 日本語
-"$dir"/jp-time.py | say -v Otoya
+"$dir"/nanji.py | say -v Otoya
 
 if [ "$prev_volume" -gt "$volume" ] ; then
   osascript -e "set volume output volume ${prev_volume}"

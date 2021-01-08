@@ -39,7 +39,7 @@ def generate_phrase(datetime):
         goro = GORO
 
     ampm = ''
-    if (hour % 12) > 0 and coinflip():
+    if coinflip():
         ampm = GOZEN if hour < 12 else GOGO
         hour %= 12
 
