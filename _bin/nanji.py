@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
-from datetime import datetime
-import random
+import argparse
+import datetime as dt
+from random import random
+import re
 import sys
 
 
@@ -18,16 +20,35 @@ GORO = 'ごろ'
 DESU = 'です。'
 
 
-def main():
-    phrase = generate_phrase(datetime.now())
+def main(argv):
+    args = parse_args(argv)
+
+    time = args.time or dt.datetime.now().time()
+    phrase = generate_phrase(time.hour, time.minute)
+
     if not sys.stdout.isatty(): print(phrase, file=sys.stderr)
     print(phrase)
 
 
-def generate_phrase(datetime):
-    hour = datetime.hour
-    minute = datetime.minute
+def parse_args(argv):
+    parser = argparse.ArgumentParser()
 
+    parser.add_argument('time', nargs='?', type=hhmm,
+        help='a time in HH:MM format to use instead of the current time')
+
+    return parser.parse_args(argv[1:])
+
+
+def hhmm(string):
+    try:
+        assert re.match(r'^\d\d?:\d\d$', string)
+        hh, mm = map(int, string.split(':'))
+        return dt.time(hh, mm)
+    except:
+        raise argparse.ArgumentTypeError(f'{string!r} is not a valid time')
+
+
+def generate_phrase(hour, minute):
     imawa = IMAWA if coinflip() else ''
 
     choudo = CHOUDO if (minute == 0 or minute == 30) and coinflip() else ''
@@ -51,8 +72,7 @@ def generate_phrase(datetime):
         else HAN if minute == 30 and (goro or coinflip())
         else f'{minute}{FUN}')
 
-    hhmm = f'{hh}{mm}'
-    time = f'{hhmm}{choudo}' if ampm or coinflip() else f'{choudo}{hhmm}'
+    time = f'{hh}{mm}{choudo}' if ampm or coinflip() else f'{choudo}{hh}{mm}'
 
     return f'{imawa}{ampm}{time}{goro}{DESU}'
 
@@ -70,8 +90,8 @@ def round(hour, minute):
 
 
 def coinflip():
-    return random.random() > 0.5
+    return random() > 0.5
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv)
