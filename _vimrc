@@ -172,7 +172,7 @@ nnoremap <Leader>4 :call <SID>StripTrailingWhitespace()<CR>
 
 
 function! <SID>Open()
-  silent execute "!open " . expand("<cWORD>")
+  silent execute "!open " . shellescape("<cWORD>")
 endfunction
 
 function! <SID>StripTrailingWhitespace()
