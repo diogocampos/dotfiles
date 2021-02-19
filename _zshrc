@@ -53,7 +53,7 @@ alias l='ls -A'
 alias ll='ls -lhA'
 alias grep='grep --color=auto'
 
-alias ding='echo "\a"'
+alias ding='echo -n "\a"'
 alias nohist='unset HISTFILE'
 alias que='whence -vS'
 alias quef='que -fx2'
@@ -138,6 +138,12 @@ cdf () {
   cd "$(pfd)"
 }
 
+gitio () {
+  # Create a custom short URL on git.io
+  # usage: gitio CODE URL
+  curl -i 'https://git.io' -F "url=$2" -F "code=$1"
+}
+
 hilite () {
   grep --color -E -- "$1|\$" "${@:2}"
 }
@@ -176,20 +182,6 @@ yd () {
     local options=(--format '[height <=? 1080]')
   fi
   ( cd ~/Downloads && youtube-dl "${options[@]}" "$@" )
-}
-
-# --------
-
-mysql-docker () {
-  local name='mysql-5.7'
-  docker start "$name" || docker run -d mysql:5.7 --name "$name" \
-    -e MYSQL_ROOT_PASSWORD=root \
-    -p 3357:3306
-}
-
-rabbitmq-docker () {
-  docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 \
-    rabbitmq:3-management
 }
 
 # --------
