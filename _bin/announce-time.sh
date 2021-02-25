@@ -2,8 +2,13 @@
 
 [ -f ~/.no-announce-time ] && exit
 
+# don't announce when using external displays
 displays="$(osascript -e 'tell application "Image Events" to count displays')"
 [ "$displays" -gt 1 ] && exit
+
+# don't announce during calls in MS Teams
+( pmset -g | grep 'display sleep prevented' | grep -q 'Teams' ) && exit
+
 
 dir="$(dirname "$0")"
 
