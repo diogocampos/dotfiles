@@ -59,6 +59,9 @@ alias que='whence -vS'
 alias quef='que -fx2'
 alias rc='mvim ~/.zshrc'
 
+alias ava='nocorrect ava'
+alias jest='nocorrect jest'
+
 # --------
 
 # git
