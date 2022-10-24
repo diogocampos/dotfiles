@@ -1,4 +1,17 @@
 .DS_Store
+
+.env.*
+!.env.sample
+
+# Create React App
+!.env.development
+!.env.test
+!.env.production
+
+# VS Code
 .vscode
+*.code-search
+
 *.swp
 *~
+___*
