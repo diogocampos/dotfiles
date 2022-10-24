@@ -17,29 +17,32 @@ FUN = '分'
 HAN = '半'
 CHOUDO = 'ちょうど'
 GORO = 'ごろ'
-DESU = 'です。'
+DESU = 'です'
 
 
 def main(argv):
     args = parse_args(argv)
 
-    time = args.time or dt.datetime.now().time()
+    time = args.TIME or dt.datetime.now().time()
     phrase = generate_phrase(time.hour, time.minute)
 
-    if not sys.stdout.isatty(): print(phrase, file=sys.stderr)
+    if (not sys.stdout.isatty()) and sys.stderr.isatty():
+        # stdout is being piped or redirected, so print to stderr as well
+        print(phrase, file=sys.stderr)
+
     print(phrase)
 
 
 def parse_args(argv):
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('time', nargs='?', type=hhmm,
+    parser.add_argument('TIME', nargs='?', type=HH_MM,
         help='a time in HH:MM format to use instead of the current time')
 
     return parser.parse_args(argv[1:])
 
 
-def hhmm(string):
+def HH_MM(string):
     try:
         assert re.match(r'^\d\d?:\d\d$', string)
         hh, mm = map(int, string.split(':'))
@@ -54,7 +57,7 @@ def generate_phrase(hour, minute):
     choudo = CHOUDO if (minute == 0 or minute == 30) and coinflip() else ''
 
     goro = ''
-    rounded = coinflip() and round(hour, minute)
+    rounded = coinflip() and round_time(hour, minute)
     if rounded and rounded != (hour, minute):
         hour, minute = rounded
         goro = GORO
@@ -74,13 +77,13 @@ def generate_phrase(hour, minute):
 
     time = f'{hh}{mm}{choudo}' if ampm or coinflip() else f'{choudo}{hh}{mm}'
 
-    return f'{imawa}{ampm}{time}{goro}{DESU}'
+    return f'{imawa}{ampm}{time}{goro}{DESU}。'
 
 
-def round(hour, minute):
+def round_time(hour, minute):
     if minute < 5:
         minute = 0
-    elif 25 < minute < 30 or 30 < minute < 35:
+    elif 25 < minute < 35:
         minute = 30
     elif 55 < minute:
         hour = (hour + 1) % 24
