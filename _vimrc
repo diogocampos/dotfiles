@@ -16,7 +16,7 @@ colorscheme gruvbox
 
 if has('gui_running')
   set guifont=Fantasque\ Sans\ Mono:h14
-  "set linespace=2
+  set linespace=-2
   set guioptions-=T               " no toolbar
   set guioptions-=r               " no vertical scrollbar
   set fuoptions=maxvert,maxhorz   " actually fill the screen in full screen mode
@@ -64,10 +64,11 @@ if has('autocmd')
   au FileType javascript setlocal ts=2 sts=2 sw=2   et
   au FileType json       setlocal ts=2 sts=2 sw=2   et
   au FileType make       setlocal ts=4 sts=4 sw=4 noet
-  au FileType markdown   setlocal ts=4 sts=4 sw=4   et
+  au FileType markdown   setlocal ts=2 sts=2 sw=2   et
   au FileType python     setlocal ts=4 sts=4 sw=4   et
   au FileType ruby,eruby setlocal ts=2 sts=2 sw=2   et
   au FileType sh         setlocal ts=8 sts=2 sw=2   et
+  au FileType sql        setlocal ts=4 sts=4 sw=4 noet
   au FileType vim        setlocal ts=2 sts=2 sw=2   et
   au FileType xml        setlocal ts=2 sts=2 sw=2 noet
 endif
@@ -110,6 +111,11 @@ set laststatus=2  " always show a status line
 set noshowmode    " don't show mode names in the last line
 
 let g:airline_powerline_fonts = 1
+if has('autocmd')
+  au VimEnter * let g:airline_symbols.linenr = ' '
+  au VimEnter * let g:airline_symbols.maxlinenr = ':'
+  au VimEnter * let g:airline_symbols.colnr = ''
+endif
 
 "" CamelCaseMotion
 
@@ -121,7 +127,7 @@ let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 
 "" highlightedyank
-"
+
 let g:highlightedyank_highlight_duration = 200
 
 "" Prettier
@@ -156,14 +162,20 @@ cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<CR>
 noremap \ ,
 let mapleader = ','
 
+" yank to clipboard
+nnoremap <Leader>y "+y
+vnoremap <Leader>y "+y
+
+" open URLs and files
 nnoremap <Leader>go :call <SID>Open()<CR>
 
+" beautify JSON
 nnoremap <Leader>jq :%!jq '.'<CR>
 vnoremap <Leader>jq :!jq '.'<CR>
 
 nnoremap <Leader>/ :set hlsearch!<CR>
 nnoremap <Leader>l :set list!<CR>
-nnoremap <Leader>4 :call <SID>StripTrailingWhitespace()<CR>
+nnoremap <Leader>$ :call <SID>StripTrailingWhitespace()<CR>
 
 "nmap <Leader>ee :edit <C-R>=expand('%:h').'/'<CR>
 "nmap <Leader>es :split <C-R>=expand('%:h').'/'<CR>
