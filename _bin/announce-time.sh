@@ -1,5 +1,8 @@
 #!/bin/sh
 
+log_file="${HOME}/.announce-time_history"
+
+
 [ -f ~/.no-announce-time ] && exit
 
 # don't announce when using external displays
@@ -18,11 +21,18 @@ if [ "$prev_volume" -gt "$volume" ] ; then
   osascript -e "set volume output volume ${volume}"
 fi
 
+
+announce () {
+  echo "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" "$@" >> "$log_file"
+  say "$@"
+}
+
 # Français
-#say -v Thomas "Il est $(date +'%H:%M')."
+#announce -v Thomas "Il est $(date +'%H:%M')."
 
 # 日本語
-"$dir"/nanji.py | say -v Otoya
+announce -v Otoya "$("$dir"/nanji.py)"
+
 
 if [ "$prev_volume" -gt "$volume" ] ; then
   osascript -e "set volume output volume ${prev_volume}"
