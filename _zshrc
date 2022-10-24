@@ -6,22 +6,30 @@ setopt CORRECT
 setopt PROMPT_SUBST
 
 # completion
+#if type brew &>/dev/null ; then
+#  # https://docs.brew.sh/Shell-Completion
+#  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+#fi
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 autoload -Uz compinit && compinit
 
 # prompt
 _diogo_set_prompt () {
+  # newline, delimiters
   local N=$'\n' SL='%S▌' SEP='│' SR='▐%s'
+  # italic, reset
   local I=$'\e[3m' R=$'\e[0m'
+  # bright colors
   local BK='8' BR='9' BG='10' BY='11' BB='12' BM='13' BC='14' BW='15'
 
+  # git
   local GL=" %F{$BM}$SL" GR="$SR%f"
   local G="\$(__git_ps1 '${GL//\%/%%}%s${GR//\%/%%}')"
   GIT_PS1_STATESEPARATOR="$SEP"
-  GIT_PS1_SHOWDIRTYSTATE=1          # *: unstaged, +: staged changes
-  GIT_PS1_SHOWSTASHSTATE=1          # $: stash is not empty
-  GIT_PS1_SHOWUNTRACKEDFILES=1      # %: untracked files
-  GIT_PS1_SHOWUPSTREAM='auto'       # <: behind, >: ahead, <>: diverged, =: same
+  GIT_PS1_SHOWDIRTYSTATE=1      # *: unstaged, +: staged changes
+  GIT_PS1_SHOWSTASHSTATE=1      # $: stash is not empty
+  GIT_PS1_SHOWUNTRACKEDFILES=1  # %: untracked files
+  GIT_PS1_SHOWUPSTREAM='auto'   # <: behind, >: ahead, <>: diverged, =: same
 
   local X="%(?..%F{r}$SL%?$SR%f)"   # non-zero exit
   local F="%(!.%F{r}.%F{c})"        # main fg color
@@ -53,46 +61,55 @@ alias l='ls -A'
 alias ll='ls -lhA'
 alias grep='grep --color=auto'
 
-alias ding='echo -n "\a"'
-alias nohist='unset HISTFILE'
-alias que='whence -vS'
-alias quef='que -fx2'
 alias rc='mvim ~/.zshrc'
+alias sha1='shasum -a 1 -b'
+alias sha256='shasum -a 256 -b'
 
 alias ava='nocorrect ava'
 alias jest='nocorrect jest'
+
+alias nohist='unset HISTFILE'
 
 # --------
 
 # git
 alias g='git'
 alias gs='git status --short --branch --show-stash'
+
 ga () { git add "$@" && gs ; }
-gci () { git commit --verbose "$@" && echo && gs ; }
 alias ga.='ga .'
+
 alias gd='git diff'
 alias gdw='git diff --word-diff=color --word-diff-regex=.'
 alias gdc='git diff --cached'
+
 alias gl='git log --graph --oneline'
+
+gci () {
+  git commit --verbose "$@" && echo &&
+  gs &&
+  osascript -e 'tell application "Terminal" to activate'
+}
 
 # Homebrew
 brew-up () {
   brew update   && echo &&
-  brew outdated && echo &&
+  #brew outdated && echo &&
   brew upgrade  && echo &&
   brew cleanup
 }
 
-brew-why () { brew uses "$@" --installed ; }
+alias brew-why='brew uses --installed'
 
-# npm
+# Node.js & npm
+alias node-nohist='NODE_REPL_HISTORY="" node'
 export PATH="${PATH}:./node_modules/.bin"
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
-nvm-up () {   # https://github.com/nvm-sh/nvm
+nvm-up () {   # https://github.com/nvm-sh/nvm#manual-upgrade
   (
     cd "$NVM_DIR"
     git fetch --tags origin
@@ -112,8 +129,17 @@ export PIPENV_VENV_IN_PROJECT=1
 # pyenv
 #eval "$(pyenv init -)"
 
-# redoc-cli
-alias redoc='redoc-cli serve docs/swagger.y*ml --watch'
+# rbenv
+eval "$(rbenv init - zsh)"
+
+# Redocly
+#alias redoc='redoc-cli serve docs/swagger.y*ml --watch'
+alias redoc='redocly preview-docs docs/swagger.y*ml'
+alias redoc-build='redoc-cli build docs/swagger.y*ml'
+
+# Rust
+#. "$HOME/.cargo/env"
+export PATH="${PATH}:${HOME}/.cargo/bin"
 
 # SourceTree
 #alias stree='open -a /Applications/SourceTree.app'
@@ -137,14 +163,22 @@ argtest () {
 }
 
 cdf () {
-  # Change directory to the topmost Finder window's current folder
+  # Change directory to the current folder of the topmost Finder window
   cd "$(pfd)"
+}
+
+ding () {
+  echo -n "\a"
 }
 
 gitio () {
   # Create a custom short URL on git.io
-  # usage: gitio CODE URL
-  curl -i 'https://git.io' -F "url=$2" -F "code=$1"
+  if [[ "$#" = 2 ]] ; then
+    curl -i 'https://git.io' -F "url=$2" -F "code=$1"
+  else
+    echo 'usage: gitio [ALIAS] [GITHUB_URL]' 1>&2
+    return 1
+  fi
 }
 
 hilite () {
@@ -160,7 +194,7 @@ kill-by-port () {
 }
 
 pfd () {
-  # Print the path to the topmost Finder window's current folder
+  # Print the path to the current folder of the topmost Finder window
   osascript -e '
     tell application "Finder"
       return POSIX path of (insertion location as alias)
@@ -174,8 +208,16 @@ pman () {
 }
 
 ql () {
-  # Show the contents of files using Quick Look
+  # Show file contents via Quick Look
   (( $# > 0 )) && qlmanage -p "$@" &>/dev/null
+}
+
+que () {
+  local result; result="$(whence -vaS "$1")"
+  local exit_status=$?
+  echo "$result"
+  [[ "$result" =~ 'shell function' ]] && whence -fx2 "$1"
+  return $exit_status
 }
 
 yd () {
@@ -189,7 +231,7 @@ yd () {
 
 # --------
 
-[ -f ~/Work/_zshrc ] && source ~/Work/_zshrc
+[[ -f ~/Work/_zshrc ]] && source ~/Work/_zshrc
 true
 
 # vim: ft=zsh
