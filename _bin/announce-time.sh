@@ -29,10 +29,10 @@ announce () {
 }
 
 # Français
-#announce -v Thomas "Il est $(date +'%H:%M')."
+#announce -v 'Thomas (Enhanced)' "Il est $(date +'%H:%M')."
 
 # 日本語
-announce -v Otoya "$("$dir"/nanji.py)"
+announce -v 'Otoya (Enhanced)' "$("$dir"/nanji.py)"
 
 
 # restore the volume if it was lowered
