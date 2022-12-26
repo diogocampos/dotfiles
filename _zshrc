@@ -204,7 +204,8 @@ pfd () {
 
 pman () {
   # View man page in Preview.app
-  man -t "$@" | open -f -a Preview
+  #man -t "$@" | open -f -a Preview
+  mandoc -T pdf "$(/usr/bin/man -w "$@")" | open -fa Preview
 }
 
 ql () {
