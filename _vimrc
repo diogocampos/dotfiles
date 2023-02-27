@@ -24,8 +24,8 @@ if has('gui_running')
 endif
 
 set display+=lastline   " show the window's last line even when it's too long
-"set linebreak           " break lines at sensible places
 set scrolloff=2         " always show a few lines above/below the current one
+set smoothscroll        " scroll by screen lines
 
 set formatoptions+=or   " auto-insert comment leaders
 set virtualedit+=block  " let the cursor go anywhere in visual block mode
@@ -41,6 +41,9 @@ set wildmode=list:longest,list:full   " sensible command line completion
 
 set ttimeoutlen=0       " no delay when hitting Esc in a terminal
 
+set linebreak           " break lines at sensible places
+set breakat+=&_\=       " additional characters to consider as word breaks
+set breakindent         " follow indentation when continuing a broken line
 
 "" Whitespace
 
@@ -116,6 +119,9 @@ if has('autocmd')
   au VimEnter * let g:airline_symbols.maxlinenr = ':'
   au VimEnter * let g:airline_symbols.colnr = ''
 endif
+
+let g:airline#extensions#whitespace#skip_indent_check_ft = {
+      \ 'markdown': ['trailing']}
 
 "" CamelCaseMotion
 
