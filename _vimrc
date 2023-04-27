@@ -67,9 +67,10 @@ if has('autocmd')
   au FileType javascript setlocal ts=2 sts=2 sw=2   et
   au FileType json       setlocal ts=2 sts=2 sw=2   et
   au FileType make       setlocal ts=4 sts=4 sw=4 noet
-  au FileType markdown   setlocal ts=2 sts=2 sw=2   et
+  au FileType markdown   setlocal ts=2 sts=2 sw=2   et linebreak
   au FileType python     setlocal ts=4 sts=4 sw=4   et
   au FileType ruby,eruby setlocal ts=2 sts=2 sw=2   et
+  au FileType text       setlocal ts=2 sts=2 sw=2   et linebreak
   au FileType sh         setlocal ts=8 sts=2 sw=2   et
   au FileType sql        setlocal ts=4 sts=4 sw=4 noet
   au FileType vim        setlocal ts=2 sts=2 sw=2   et
