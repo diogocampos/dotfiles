@@ -12,8 +12,8 @@ max_volume='38'
 displays="$(osascript -e 'tell application "Image Events" to count displays')"
 [ "$displays" -gt 1 ] && exit
 
-# don't announce during calls in MS Teams
-( pmset -g | grep 'display sleep prevented' | grep -q 'Teams' ) && exit
+# don't announce during work calls
+( pmset -g | grep -Eq 'display sleep prevented .*(Slack|Teams)' ) && exit
 
 
 # lower the volume if it's over the threshold
